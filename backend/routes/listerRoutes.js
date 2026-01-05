@@ -15,11 +15,5 @@ router.get("/listings", (req,res) => {
 router.delete("/listings/:id", (req,res) => {
     console.log("Deleting listing")
 })
-router.post("/signup", (req,res) => {
-    console.log("Creating new user")
-})
 
-router.post("/login", (req,res) => {
-    console.log("Logging in user")
-})
 module.exports = router;
