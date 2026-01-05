@@ -9,4 +9,4 @@ const cloud = cloudinary.config({
     api_secret: CLOUDSECRET
 })
 
-module.exports = {cloud};
+module.exports = cloud;
