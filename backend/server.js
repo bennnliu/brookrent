@@ -19,13 +19,15 @@ app.get("/", (req,res) => {
     });
 });
 
-const listerRouter = require('./routes/renter');
-const renterRouter = require('./routes/lister');
-const signupRouter = require('./routes/signup');
+const listerRouter = require('./routes/listerRoutes');
+const renterRouter = require('./routes/renterRoutes');
+const userRouter = require('./routes/userRoutes');
+const adminRouter = require('./routes/adminRoutes');
 
 app.use('/lister', listerRouter);
 app.use('/renter', renterRouter);
-app.use('/signup', signupRouter);
+app.use('/user', userRouter);
+app.use('/admin', adminRouter);
 
 const startServer = async () => {
   try{
