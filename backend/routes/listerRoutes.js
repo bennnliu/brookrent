@@ -1,15 +1,19 @@
-const express = require('express')
-const router = express.Router()
-const listerController = require('../controllers/listerController')
+import express from 'express';
+import * as listerController from '../controllers/listerController.js'; 
+import {verifyToken} from '../middleware/jwtMiddleware.js';
 
-router.post("/list", listerController.verifyToken, listerController.createListing)
+const router = express.Router();
 
-router.put("/listings/:id", listerController.verifyToken, listerController.updateListing)
+router.use(verifyToken)
+
+router.post("/list", listerController.createListing)
+
+router.put("/listings/:id", listerController.updateListing)
 
 router.get("/listings", (req,res) => {
     console.log("Sending user's listings")
 })
 
-router.delete("/listings/:id", listerController.verifyToken, listerController.deleteListing)
+router.delete("/listings/:id", listerController.deleteListing)
 
-module.exports = router;
+export default router

@@ -1,8 +1,4 @@
-const { pool } = require('../config/neondb');
-const jwt = require('jsonwebtoken');
-require('dotenv').config()
-
-const {JWT_SECRET} = process.env
+import { pool } from '../config/neondb.js';
 
 const createListing = async (req, res) => {
     try{
@@ -83,27 +79,4 @@ const deleteListing = async (req, res) => {
     }
 }
 
-const verifyToken = (req,res,next)=> {
-    const authHeader = req.headers.authorization;
-
-    //Checks if auth is empty
-    if (!authHeader) {
-        return res.json({ message: "Missing Authorization header" });
-    }
-
-    //Removes "Bearer" string from token
-    const jwt_token = authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
-
-    //Verifes jwt token 
-    try{
-        req.user = jwt.verify(jwt_token, JWT_SECRET)
-        next()
-            
-    }
-    catch(e){
-        console.error(e)
-        return res.json({message: "Invalid token"})
-    }
-}
-
-module.exports = {verifyToken, createListing, updateListing, deleteListing };
+export {createListing, updateListing, deleteListing}

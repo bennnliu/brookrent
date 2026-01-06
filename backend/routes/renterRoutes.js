@@ -1,7 +1,8 @@
-const express = require('express')
-const renterController = require('../controllers/renterController')
+import express from 'express'
+import * as renterController from '../controllers/renterController.js'
+
 const router = express.Router()
 
 router.get("/properties", renterController.getProperties)
 
-module.exports = router;
+export default router

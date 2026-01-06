@@ -1,28 +1,30 @@
-const express =  require('express')
-const cors = require('cors')
-const morgan = require('morgan')
-const helmet = require('helmet')
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import { ajDecision } from './middleware/arcjetMiddleware.js'; 
+import { db } from './config/neondb.js'; 
+
 const app = express();
 const port = 3000;
-const { db } = require('./config/neondb');
 
 app.use(cors())
 app.use(morgan('dev'))
 app.use(helmet());
+app.use(ajDecision);
 app.use(express.json());
 
 app.get("/", (req,res) => {
-    console.log("API is running");
     res.json({
         message: "API is running",
         timestamp: new Date().toISOString()
     });
 });
 
-const listerRouter = require('./routes/listerRoutes');
-const renterRouter = require('./routes/renterRoutes');
-const userRouter = require('./routes/userRoutes');
-const adminRouter = require('./routes/adminRoutes');
+import listerRouter from './routes/listerRoutes.js';
+import renterRouter from './routes/renterRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import adminRouter from './routes/adminRoutes.js';
 
 app.use('/lister', listerRouter);
 app.use('/renter', renterRouter);

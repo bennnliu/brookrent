@@ -1,8 +1,9 @@
 //Account Creation is only for listers
-require('dotenv').config()
-const { pool } = require('../config/neondb');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+import { pool } from '../config/neondb.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const {JWT_SECRET} = process.env
 
@@ -74,5 +75,4 @@ const login = async (req, res) => {
         console.error(e)
     }
 }
-module.exports = { signUp, login };
-
+export { signUp, login };

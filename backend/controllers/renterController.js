@@ -1,4 +1,4 @@
-const { pool } = require('../config/neondb');
+import {pool} from '../config/neondb.js'
 
 const getProperties = async (req, res) => {
     try{
@@ -10,4 +10,4 @@ const getProperties = async (req, res) => {
     }
 }
 
-module.exports = { getProperties };
+export {getProperties};

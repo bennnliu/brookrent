@@ -1,9 +1,10 @@
-require('dotenv').config()
-const {Pool} = require('pg')
+import dotenv from 'dotenv';
+import {Pool} from 'pg';
 
+dotenv.config();
 const {PGHOST, PGDATABASE, PGUSER, PGPASSWORD} = process.env
 
-const pool = new Pool({
+export const pool = new Pool({
     host: PGHOST,
     database: PGDATABASE,
     user: PGUSER,
@@ -14,7 +15,7 @@ const pool = new Pool({
     }
 })
 
-const db = async ()=> {
+export const db = async ()=> {
     const listers = `
     CREATE TABLE IF NOT EXISTS listers(
         id SERIAL PRIMARY KEY,
@@ -46,5 +47,3 @@ const db = async ()=> {
         console.log(e)
     }
 }
-
-module.exports = {pool, db };
