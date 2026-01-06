@@ -1,8 +1,5 @@
 import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/node";
-import dotenv from 'dotenv';
-dotenv.config();
-
-const {ARCJET_KEY} = process.env
+const { ARCJET_KEY } = process.env;
 
 const aj = arcjet({
     key: ARCJET_KEY,
@@ -50,4 +47,3 @@ const ajDecision = async (req, res, next) => {
 }
 
 export {ajDecision};
-

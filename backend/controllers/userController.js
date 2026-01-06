@@ -2,8 +2,6 @@
 import { pool } from '../config/neondb.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
 
 const {JWT_SECRET} = process.env
 
@@ -60,7 +58,7 @@ const login = async (req, res) => {
         }
 
         //Checks if the passwords match
-        matchedPasswords = await bcrypt.compare(password, potential_user_data.rows[0].password);
+        const matchedPasswords = await bcrypt.compare(password, potential_user_data.rows[0].password);
         if (!matchedPasswords) {
             console.log("Incorrect password")
             return res.json({message: "Incorrect password"})
