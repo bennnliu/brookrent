@@ -15,7 +15,6 @@ const signUp = async (req, res) => {
         }
         //Create and set user's data
         const {name, email, password, number} = req.body;
-        const token = jwt.sign(email, JWT_SECRET)
         const hashedPassword = await bcrypt.hash(password, 10);
 
         //Check if the user's email or number already exists
@@ -27,13 +26,13 @@ const signUp = async (req, res) => {
         }
 
         //Add user's data into database
-        const query = `INSERT INTO listers (name, email, password, number, jwt_token) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-        const values = [name, email, hashedPassword, number, token];
-        const result = await pool.query(query, values);
+        const query = `INSERT INTO listers (name, email, password, number) VALUES ($1, $2, $3, $4) RETURNING *`;
+        const values = [name, email, hashedPassword, number];
+        await pool.query(query, values);
 
         //Return the user's jwt token 
-        return res.json(result.rows[0].jwt_token);     
-
+        return login(req, res)  
+       
     }
     catch(e){
         console.error(e)
@@ -51,21 +50,25 @@ const login = async (req, res) => {
         const {email, password} = req.body;
 
         //Checks if user's data exists
-        const potentialUserData = await pool.query(`SELECT password, jwt_token FROM listers WHERE email = $1`, [email]);
+        const potential_user_data = await pool.query(`SELECT password FROM listers WHERE email = $1`, [email]);
         
          //When user's data does not exists
-        if(potentialUserData.rows.length === 0){
+        if(potential_user_data.rows.length === 0){
             console.log("User does not exist")
             return res.json({message: "User does not exist"})
         }
-        matchedPasswords = await bcrypt.compare(password, potentialUserData.rows[0].password);
+
+        //Checks if the passwords match
+        matchedPasswords = await bcrypt.compare(password, potential_user_data.rows[0].password);
         if (!matchedPasswords) {
             console.log("Incorrect password")
             return res.json({message: "Incorrect password"})
         }
         
-        const jwt_token = potentialUserData.rows[0].jwt_token;
-        return res.json(jwt_token);
+        const user_data = await pool.query(`SELECT * FROM listers WHERE email = $1`, [email]);
+        const payload = {listerId: user_data.rows[0].id, email: user_data.rows[0].email}
+        const token = jwt.sign(payload, JWT_SECRET,{expiresIn: "1h" })
+        return res.json({email: user_data.rows[0].email, name: user_data.rows[0].name, token: token});   
     }
     catch(e){
         console.error(e)
