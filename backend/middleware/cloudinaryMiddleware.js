@@ -26,7 +26,7 @@ export const uploadImage = (req, res, next) => {
         }
         try {
             if (!req.files) {
-                return res.json({message: "No file uploaded" });
+                return next()
             }
             console.log("req.files:", req.files);
             const result = await Promise.all(req.files.map(file => 

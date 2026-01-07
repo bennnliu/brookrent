@@ -34,8 +34,8 @@ app.use('/admin', express.json(), adminRouter);
 const startServer = async () => {
   try{
       await db()
-       app.listen(port, ()=> {
-       console.log("Succesfully connected to port: " + port)
+      app.listen(port, ()=> {
+      console.log("Succesfully connected to port: " + port)
     })
   }
     catch(e){

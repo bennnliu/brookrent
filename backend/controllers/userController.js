@@ -17,7 +17,7 @@ const signUp = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         //Check if the user's email or number already exists
-        const existing = await pool.query(`SELECT * FROM listers WHERE email = $1 OR number = $2`, [email, number]);
+        const existing = await pool.query(`SELECT * FROM users WHERE email = $1 OR number = $2`, [email, number]);
 
         if (existing.rows.length > 0) {
             console.log("User already exists")
@@ -25,7 +25,7 @@ const signUp = async (req, res) => {
         }
 
         //Add user's data into database
-        const query = `INSERT INTO listers (name, email, password, number) VALUES ($1, $2, $3, $4) RETURNING *`;
+        const query = `INSERT INTO users (name, email, password, number) VALUES ($1, $2, $3, $4) RETURNING *`;
         const values = [name, email, hashedPassword, number];
         await pool.query(query, values);
 
@@ -49,7 +49,7 @@ const login = async (req, res) => {
         const {email, password} = req.body;
 
         //Checks if user's data exists
-        const potential_user_data = await pool.query(`SELECT password FROM listers WHERE email = $1`, [email]);
+        const potential_user_data = await pool.query(`SELECT password FROM users WHERE email = $1`, [email]);
         
          //When user's data does not exists
         if(potential_user_data.rows.length === 0){
@@ -64,8 +64,8 @@ const login = async (req, res) => {
             return res.json({message: "Incorrect password"})
         }
         
-        const user_data = await pool.query(`SELECT * FROM listers WHERE email = $1`, [email]);
-        const payload = {listerId: user_data.rows[0].id, email: user_data.rows[0].email}
+        const user_data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+        const payload = {listerId: user_data.rows[0].id, email: user_data.rows[0].email, role: user_data.rows[0].role}
         const token = jwt.sign(payload, JWT_SECRET,{expiresIn: "1h" })
         return res.json({email: user_data.rows[0].email, name: user_data.rows[0].name, token: token});   
     }
