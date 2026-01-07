@@ -13,7 +13,6 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(helmet());
 app.use(ajDecision);
-app.use(express.json());
 
 app.get("/", (req,res) => {
     res.json({
@@ -28,9 +27,9 @@ import userRouter from './routes/userRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 
 app.use('/lister', listerRouter);
-app.use('/renter', renterRouter);
-app.use('/user', userRouter);
-app.use('/admin', adminRouter);
+app.use('/renter', express.json(), renterRouter);
+app.use('/user', express.json(), userRouter);
+app.use('/admin', express.json(), adminRouter);
 
 const startServer = async () => {
   try{

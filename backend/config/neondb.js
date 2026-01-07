@@ -27,12 +27,12 @@ export const db = async ()=> {
     const properties = `
     CREATE TABLE IF NOT EXISTS properties(
         id SERIAL PRIMARY KEY,
-        lister_id INTEGER REFERENCES listers(id) ON DELETE CASCADE,
-        title VARCHAR(225),
+        lister_id INTEGER NOT NULL REFERENCES listers(id) ON DELETE CASCADE,
+        title VARCHAR(255),
         price INTEGER CHECK (price > 0),
         address VARCHAR(255),
         description TEXT,
-        image_url VARCHAR(255),
+        image_urls TEXT[],
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );

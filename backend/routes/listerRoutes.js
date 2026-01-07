@@ -1,19 +1,19 @@
 import express from 'express';
 import * as listerController from '../controllers/listerController.js'; 
 import {verifyToken} from '../middleware/jwtMiddleware.js';
+import { uploadImage } from '../middleware/cloudinaryMiddleware.js';
 
 const router = express.Router();
-
 router.use(verifyToken)
 
-router.post("/list", listerController.createListing)
+router.get("/listings", listerController.getListings)
 
-router.put("/listings/:id", listerController.updateListing)
+router.get("/listings/:id",listerController.getListing)
 
-router.get("/listings", (req,res) => {
-    console.log("Sending user's listings")
-})
+router.post("/list", uploadImage , listerController.createListing)
 
-router.delete("/listings/:id", listerController.deleteListing)
+router.put("/listings/:id", uploadImage, listerController.updateListing)
+
+router.delete("/listings/:id",listerController.deleteListing)
 
 export default router
