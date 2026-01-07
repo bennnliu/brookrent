@@ -13,13 +13,16 @@ const getProperties = async (req, res) => {
 const getProperty = async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await pool.query('SELECT * FROM properties WHERE id = $1', [id]);
+        const property = await pool.query('SELECT * FROM properties WHERE id = $1', [id]);
         
-        if (result.rows.length === 0) {
-            return res.status(400).json({ message: "Property does not exist" });
+        if (property.rows.length === 0) {
+            return res.status(404).json({ message: "Property does not exist" });
         }
+        const lister_id = property.rows[0].lister_id
+        const lister = await pool.query('SELECT name, email, number FROM users WHERE id = $1', [lister_id])
+        const result = {...property.rows[0], lister: lister.rows[0]}
         
-        return res.status(200).json(result.rows[0]);
+        return res.status(200).json(result);
     } catch (e) {
         console.error(e);
         return res.status(404).json({ message: "Internal server error" });
