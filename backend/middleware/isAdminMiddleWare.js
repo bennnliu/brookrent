@@ -4,7 +4,7 @@ const isAdmin = (req,res,next) => {
     }
 
     if (req.user.role !== "admin") {
-        return res.json({ message: "Access denied: Admins only" });
+        return res.staus(403).json({ message: "Access denied: Admins only" });
     } 
     
     next()

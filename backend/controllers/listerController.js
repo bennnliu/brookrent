@@ -4,10 +4,10 @@ const getListings = async (req,res) => {
     try{
         const listerId = req.user.listerId
         const result =  await pool.query(`SELECT * FROM properties WHERE lister_id = $1` , [listerId])
-        return res.json(result.rows)
+        return res.status(200).json(result.rows)
     }
     catch(e){
-        console.error(e)
+        res.status(404).send(e)
     }
 }
 
@@ -18,19 +18,19 @@ const getListing = async (req,res) => {
 
         //Checks if the id exists
         if((await pool.query(`SELECT id FROM properties WHERE id = $1`,[id])).rows.length === 0){
-            return res.json({message: "Listing does not exist"})
+            return res.status(400).json({message: "Listing does not exist"})
         }
 
         const property_lister_id  = await pool.query(`SELECT lister_id FROM properties WHERE id = $1`, [id])
         if(listerId !== property_lister_id.rows[0].lister_id){
-            return res.json({message: "You do not own this listing"})
+            return res.status(403).json({message: "You do not own this listing"})
         }
 
         const result = await pool.query(`SELECT * FROM properties WHERE id = $1`, [id])
-        return res.json(result.rows[0])
+        return res.status(200).json(result.rows[0])
     }
     catch(e){
-        console.error(e)
+        res.status(404).send(e)
     }
 }
 
@@ -48,10 +48,10 @@ const createListing = async (req, res) => {
         
         //Adds data into database and returns listing
         const result = await pool.query(query, values);
-        return res.json(result.rows[0]);
+        return res.status(200).json(result.rows[0]);
     }
     catch(e){
-        console.error(e)
+        console.status(404).error(e)
     }
 }
 
@@ -61,7 +61,7 @@ const updateListing = async (req, res) => {
 
         //Checks if the id exists
         if((await pool.query(`SELECT id FROM properties WHERE id = $1`,[id])).rows.length === 0){
-            return res.json({message: "Listing does not exist"})
+            return res.status(400).json({message: "Listing does not exist"})
         }
 
         //Checks if the lister_id matches
@@ -70,7 +70,7 @@ const updateListing = async (req, res) => {
         const property_lister_id  = await pool.query(`SELECT lister_id FROM properties WHERE id = $1`, [id])
 
         if(listerId !== property_lister_id.rows[0].lister_id){
-            return res.json({message: "You do not own this listing"})
+            return res.status(403).json({message: "You do not own this listing"})
         }
 
         const {title, price, address, description} = req.body;
@@ -81,11 +81,11 @@ const updateListing = async (req, res) => {
         const values = [title, price, address, description, image_urls, id];
 
         const result = await pool.query(query,values)
-        return res.json(result.rows[0])
+        return res.status(200).json(result.rows[0])
 
     }
     catch(e){
-        console.error(e)
+        res.status(404).send(e)
     }
 }
 
@@ -95,7 +95,7 @@ const deleteListing = async (req, res) => {
 
         //Checks if the id exists
         if((await pool.query(`SELECT id FROM properties WHERE id = $1`,[id])).rows.length === 0){
-            return res.json({message: "Listing does not exist"})
+            return res.status(400).json({message: "Listing does not exist"})
         }
 
          //Checks if the lister_id matches
@@ -103,15 +103,15 @@ const deleteListing = async (req, res) => {
         const property_lister_id  = await pool.query(`SELECT lister_id FROM properties WHERE id = $1`, [id])
 
         if(listerId !== property_lister_id.rows[0].lister_id){
-            return res.json({message: "You do not own this listing"})
+            return res.status(403).json({message: "You do not own this listing"})
         }
 
         pool.query(`DELETE FROM properties WHERE id = $1`,[id])
-        return res.json({message: "Listing deleted"})
+        return res.status(200).json({message: "Listing deleted"})
 
     }
     catch(e){
-        console.error(e)
+       res.status(404).send(e)
     }
 }
 

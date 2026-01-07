@@ -1,5 +1,15 @@
 import { pool } from '../config/neondb.js';
 
+const getListings = async (req,res) => {
+    try {
+        const result = await pool.query('SELECT * FROM properties');
+        return res.status(200).json(result.rows);
+    } catch (e) {
+        console.error(e);
+        return res.status(404).json({ message: "Internal server error" });
+    }
+}
+
 const createListing = async (req, res) => {
     try{
         //Gathers data 
@@ -14,10 +24,10 @@ const createListing = async (req, res) => {
         
         //Adds data into database and returns listing
         const result = await pool.query(query, values);
-        return res.json(result.rows[0]);
+        return res.status(200).json(result.rows[0]);
     }
     catch(e){
-        console.error(e)
+        res.status(404).send(e)
     }
 }
 
@@ -38,11 +48,11 @@ const updateListing = async (req, res) => {
         const values = [title, price, address, description, image_urls, id];
 
         const result = await pool.query(query,values)
-        return res.json(result.rows[0])
+        return res.status(200).json(result.rows[0])
 
     }
     catch(e){
-        console.error(e)
+        res.status(404).send(e)
     }
 }
 
@@ -56,12 +66,12 @@ const deleteListing = async (req, res) => {
         }
 
         pool.query(`DELETE FROM properties WHERE id = $1`,[id])
-        return res.json({message: "Listing deleted"})
+        return res.status(200).json({message: "Listing deleted"})
 
     }
     catch(e){
-        console.error(e)
+        res.status(404).send(e)
     }
 }
 
-export {createListing, updateListing, deleteListing}
+export {getListings, createListing, updateListing, deleteListing}

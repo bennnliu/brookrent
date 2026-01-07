@@ -18,17 +18,16 @@ const upload = multer({
 
 export const uploadImage = (req, res, next) => {
     upload.array('photos',5)(req, res, async (err) => {
-        if (err) {
-            if (err.code === 'LIMIT_FILE_SIZE') {
-                return res.json({ error: 'File too large. Max size is 5MB.' });
+        if (e) {
+            if (e.code === 'LIMIT_FILE_SIZE') {
+                return res.status(413).json({ error: 'File too large. Max size is 5MB.' });
             }
-            return res.json({ error: err.message });
+            return res.status(404).json({ error: err.message });
         }
         try {
             if (!req.files) {
                 return next()
             }
-            console.log("req.files:", req.files);
             const result = await Promise.all(req.files.map(file => 
                 new Promise((resolve, reject) => {
                 cloudinary.uploader.upload_stream({
@@ -44,7 +43,7 @@ export const uploadImage = (req, res, next) => {
             next()
         } catch (e) {
             console.error(e);
-            return res.json({message: "Cloudinary error" });
+            return res.status(404).json({message: "Cloudinary error" });
         }
     });
 }

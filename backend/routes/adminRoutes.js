@@ -8,8 +8,9 @@ const router = express.Router()
 
 router.use(verifyToken)
 
+router.get("/listings", isAdmin,adminController.getListings)
 router.post("/list",isAdmin,uploadImage,adminController.createListing)
 router.put("/listings/:id",isAdmin,uploadImage,adminController.updateListing)
-router.delete("/listings/:id",isAdmin,uploadImage,adminController.deleteListing)
+router.delete("/listings/:id",isAdmin,adminController.deleteListing)
 
 export default router

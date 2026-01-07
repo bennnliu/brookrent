@@ -7,7 +7,7 @@ const verifyToken = (req,res,next)=> {
 
     //Checks if auth is empty
     if (!authHeader) {
-        return res.json({ message: "Missing Authorization header" });
+        return res.status(400).json({ message: "Missing Authorization header" });
     }
 
     //Removes "Bearer" string from token
@@ -21,7 +21,7 @@ const verifyToken = (req,res,next)=> {
     }
     catch(e){
         console.error(e)
-        return res.json({message: "Invalid token"})
+        return res.status(404).json({message: "Invalid token"})
     }
 }
 
