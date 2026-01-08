@@ -1,26 +1,22 @@
-function HomeOwner() {
-  return <button>List your home</button>;
-}
-
-function Renters() {
-  return <button>Rent a house</button>;
-}
-
-function Login() {
-  return <button>Login</button>;
-}
-
-function Sign() {
-  return <button>Sign up</button>;
-}
-
+import "../styling/homepage.css";
+import homepageImage from "../assets/homepage.jpg";
+import Navbar from "../pages/navbar.jsx";
 function Homepage() {
   return (
-    <div>
-      <HomeOwner />
-      <Renters />
-      <Login />
-      <Sign />
+    <div
+      className="homepage"
+      style={{ backgroundImage: `url(${homepageImage})` }}
+    >
+      <Navbar />
+
+      <div className="quote">
+        <h2>Welcome to BrookRent</h2>
+
+        <div className="button-group">
+          <button className="button">Rent a house</button>
+          <button className="button">List properties</button>
+        </div>
+      </div>
     </div>
   );
 }
