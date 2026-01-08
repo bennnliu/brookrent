@@ -1,6 +1,6 @@
 import "../styling/homepage.css";
 import homepageImage from "../assets/homepage.jpg";
-import Navbar from "../pages/navbar.jsx";
+import Navbar from "../components/navbar.jsx";
 function Homepage() {
   return (
     <div
