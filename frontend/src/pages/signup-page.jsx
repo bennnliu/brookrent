@@ -1,4 +1,3 @@
-//Imports
 import { Button } from "@/components/ui/button"
 import {
   Field,
@@ -12,7 +11,6 @@ import {
   FieldSet,
   FieldTitle,
 } from "@/components/ui/field"
-import {Input} from "@/components/ui/input"
 import {
   Card,
   CardAction,
@@ -22,11 +20,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { House } from 'lucide-react';
-import {Link} from 'react-router-dom'
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
-import {Controller,useForm } from "react-hook-form"
+import {useForm } from "react-hook-form"
+import WelcomeHeader from '../components/signup-page/welcome-header'
+import FormInput from "@/components/signup-page/form-input.jsx"
+import FormHeader from "@/components/signup-page/form-header.jsx"
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
@@ -56,62 +55,22 @@ const SignUpPage = () => {
         })
     return(
         <div > 
-            {/*Main Header: House icon + Welcome Message*/}
-            <div className="flex justify-center pt-10"> 
-                <Card className="w-full max-w-md bg-[#990000]"> 
-                    <CardContent className="flex items-center justify-center gap-3 text-2xl font-bold text-white"> 
-                        <Link to="/"><House className="w-12 h-12 transition-transform duration-200 hover:scale-110" /></Link>
-                        <span>Welcome to Brook Rents</span> 
-                    </CardContent> 
-                </Card>
-            </div>
-            {/*Sign Up Form*/}
+            <WelcomeHeader/>
             <div className="flex justify-center pt-5">
                 <Card className="w-full max-w-md">
-                    {/*Header*/}
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-bold ">Sign Up</CardTitle>
-                        <CardDescription>Enter your information to sign up</CardDescription>
-                        <CardAction> <Button variant="link"><Link to="/auth/login">Login</Link></Button></CardAction>
-                    </CardHeader>
-                     <FieldSeparator />
-                    {/*Body*/}
+                    <FormHeader/>
+                    <FieldSeparator />
                     <CardContent>
                         <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
                             <FieldGroup className="space-y-0.5">
-                            <Controller name="name" control={form.control} render={({field, fieldState}) => (
-                                    <Field data-invalid={fieldState.invalid} >
-                                    <FieldLabel htmlFor="signup-form-name" >Name</FieldLabel>
-                                    <Input {...field} aria-invalid={fieldState.invalid} id="signup-form-name" type="text" required></Input>
-                                    {fieldState.invalid && (<FieldError errors={[fieldState.error]}></FieldError>)}
-                                </Field>
-                            )}/>
-                            <Controller name="email" control={form.control} render={({field, fieldState}) => (       
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="signup-form-email">Email</FieldLabel>
-                                    <Input {...field} aria-invalid={fieldState.invalid} id="signup-form-email" type="email" placeholder="johnnyappleseed@gmail.com" required></Input>
-                                    {fieldState.invalid && (<FieldError errors={[fieldState.error]}></FieldError>)}
-                                </Field>
-                            )}/>         
-                            <Controller name="password" control={form.control} render={({field, fieldState}) => (       
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="signup-form-password">Password</FieldLabel>
-                                    <Input {...field} aria-invalid={fieldState.invalid} id="signup-form-password" type="password" placeholder="••••••••" required></Input>
-                                    {fieldState.invalid && (<FieldError errors={[fieldState.error]}></FieldError>)}
-                                </Field>
-                            )}/>         
-                            <Controller name="number" control={form.control} render={({field, fieldState}) => (  
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="signup-form-number">Number</FieldLabel>
-                                    <Input {...field} aria-invalid={fieldState.invalid} id="number" type="signup-form-number" placeholder="(123)-456-7890"></Input>
-                                    {fieldState.invalid && (<FieldError errors={[fieldState.error]}></FieldError>)}
-                                </Field>
-                                )}/>         
-                        </FieldGroup>
+                                <FormInput name="name" control={form.control} label="Name"type="text" required/>
+                                <FormInput name="email" control={form.control} label="Email" type="email" placeholder="johnnyappleseed@gmail.com" required/>
+                                <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" required/>
+                                <FormInput name="number" control={form.control} label="Number" type="tel" placeholder="(123)-456-7890" required/>
+                            </FieldGroup>
                         </form>
                     </CardContent>
                      <FieldSeparator />
-                    {/*Footer*/}
                     <CardFooter>
                         <Button type="submit" form="signup-form"className="mx-auto bg-[#990000] hover:bg-[#6B000D]">Sign Up</Button>
                     </CardFooter>
