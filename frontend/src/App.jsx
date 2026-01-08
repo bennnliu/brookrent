@@ -1,5 +1,3 @@
-import React from 'react'
-import ReactDom from 'react-dom'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import './index.css'
 
@@ -19,10 +17,8 @@ function App() {
       element: <SignUpPage/>
     }
 ])
-
   return (
     <RouterProvider router={router}/>
   )
 }
-
 export default App
