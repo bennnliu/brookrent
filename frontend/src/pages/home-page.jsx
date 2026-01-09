@@ -1,6 +1,8 @@
 import "../styling/homepage.css";
 import homepageImage from "../assets/homepage.jpg";
 import Navbar from "../components/navbar.jsx";
+import { Button } from "@/components/ui/button";
+
 function Homepage() {
   return (
     <div
@@ -13,8 +15,8 @@ function Homepage() {
         <h2>Welcome to BrookRent</h2>
 
         <div className="button-group">
-          <button className="button">Rent a house</button>
-          <button className="button">List properties</button>
+          <Button className="button">Rent a house</Button>
+          <Button className="button">List properties</Button>
         </div>
       </div>
     </div>
