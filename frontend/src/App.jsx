@@ -1,16 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
-<<<<<<< Updated upstream
 import Homepage from './pages/home-page.jsx'
 import SignUpPage from './pages/signup-page.jsx'
 import LoginPage from './pages/login-page.jsx'
 import ErrorNotFound from './pages/error-not-found.jsx'
-=======
-import Homepage from "./pages/home-page.jsx";
-import SignUpPage from "./pages/signup-page.jsx";
-import ErrorNotFound from "./pages/error-not-found.jsx";
->>>>>>> Stashed changes
+import ListerDashboardPage from "./pages/lister-dashboard-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,24 +15,20 @@ function App() {
       errorElement: <ErrorNotFound />,
     },
     {
-<<<<<<< Updated upstream
       path:'/auth/signup',
       element: <SignUpPage/>
     },
     {
       path:'/auth/login',
       element:<LoginPage/>
+    },
+    {
+      path:'/lister/dashboard',
+      element: <ListerDashboardPage/>
     }
 ])
   return (
     <RouterProvider router={router}/>
   )
-=======
-      path: "/auth/signup",
-      element: <SignUpPage />,
-    },
-  ]);
-  return <RouterProvider router={router} />;
->>>>>>> Stashed changes
 }
 export default App;

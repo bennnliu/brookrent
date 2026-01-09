@@ -14,7 +14,7 @@ app.use(morgan('dev'))
 app.use(helmet());
 app.use(ajDecision);
 app.use(express.json());
-app.get("/", (req,res) => {
+app.get("/api", (req,res) => {
     res.json({
         message: "API is running",
         timestamp: new Date().toISOString()
@@ -26,10 +26,10 @@ import renterRouter from './routes/renterRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 
-app.use('/lister', listerRouter);
-app.use('/renter', renterRouter);
-app.use('/user', userRouter);
-app.use('/admin', adminRouter);
+app.use('/api/lister', listerRouter);
+app.use('/api/renter', renterRouter);
+app.use('/api/user', userRouter);
+app.use('/api/admin', adminRouter);
 
 const startServer = async () => {
   try{

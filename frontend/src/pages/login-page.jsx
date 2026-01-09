@@ -26,19 +26,31 @@ import {useForm } from "react-hook-form"
 import WelcomeHeader from '../components/welcome-header'
 import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
+import api from "@/lib/axios";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
         email: z.email("Enter in a proper email address"),
         password: z.string().min(8,"Password must be minimum 8 characters."),
     })
 
-//Logic that will be implemented when the user clicks submit
-const onSubmit = (data) =>{
-        console.log(data)
-    }
-
 
 function LoginPage() {
+  //Logic that will be implemented when the user clicks submit
+  const navigate = useNavigate()
+  const onSubmit = async (data) =>{
+      try{
+          const res = await api.post("/user/login", data)
+          localStorage.setItem("jwtToken", res.data.token)
+          localStorage.setItem("email",res.data.email)
+          localStorage.setItem("name", res.data.name)
+          navigate('/lister/dashboard')
+          console.log(res)
+      }
+      catch(e){
+          console.log(e)
+      }
+  }
   //Create a form using react-hook-form and implements zod's validation data and default values
   const form = useForm({
           resolver: zodResolver(formSchema),
@@ -46,7 +58,7 @@ function LoginPage() {
               email: "",
               password: "",
           },
-      })
+  })
 
   return (
     <div>
@@ -65,7 +77,7 @@ function LoginPage() {
               </CardContent>
             <FieldSeparator />
             <CardFooter>
-                <Button type="submit" form="signup-form"className="mx-auto bg-[#990000] hover:bg-[#6B000D]">Login</Button>
+                <Button type="submit" form="login-form"className="mx-auto bg-[#990000] hover:bg-[#6B000D]">Login</Button>
             </CardFooter>
           </Card>
 

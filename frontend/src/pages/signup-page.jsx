@@ -26,19 +26,29 @@ import {useForm } from "react-hook-form"
 import WelcomeHeader from '../components/welcome-header'
 import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
+import api from '../lib/axios'
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
-        name: z.string({ required_error: "Name is required" }),
+        name: z.string("Name is required" ),
         email: z.email("Enter in a proper email address"),
         password: z.string().min(8,"Password must be minimum 8 characters."),
         number: z.string().min(10, "Must be a valid phone number")
     })
 
 //Logic that will be implemented when the user clicks submit
-const onSubmit = (data) =>{
-        console.log(data)
+const onSubmit = async (data) =>{
+    try{
+        const res = await api.post("/user/signup", data)
+        localStorage.setItem("jwtToken", res.data.token)
+        localStorage.setItem("email",res.data.email)
+        localStorage.setItem("name", res.data.name)
+        console.log(res)
     }
+    catch(e){
+        console.log(e)
+    }
+}
 
 //Signup Page
 const SignUpPage = () => {
@@ -63,10 +73,10 @@ const SignUpPage = () => {
                     <CardContent>
                         <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
                             <FieldGroup className="space-y-0.5">
-                                <FormInput name="name" control={form.control} label="Name"type="text" required/>
-                                <FormInput name="email" control={form.control} label="Email" type="email" placeholder="johnnyappleseed@gmail.com" required/>
-                                <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" required/>
-                                <FormInput name="number" control={form.control} label="Number" type="tel" placeholder="(123)-456-7890" required/>
+                                <FormInput name="name" control={form.control} label="Name"type="text" />
+                                <FormInput name="email" control={form.control} label="Email" type="email" placeholder="johnnyappleseed@gmail.com" />
+                                <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" />
+                                <FormInput name="number" control={form.control} label="Number" type="tel" placeholder="(123)-456-7890" />
                             </FieldGroup>
                         </form>
                     </CardContent>
