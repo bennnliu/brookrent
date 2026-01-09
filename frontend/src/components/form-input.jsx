@@ -3,10 +3,6 @@ import { Input } from "@/components/ui/input"
 import { Field, FieldLabel, FieldError } from "@/components/ui/field"
 
 const FormInput = ({name,control,label,type="text",placeholder,required}) =>{
-    if (!control) {
-    console.error(`FormInput Error: Prop 'control' is missing for field '${name}'`);
-    return null;
-  }
     return(
         <Controller 
         name={name}
@@ -17,7 +13,7 @@ const FormInput = ({name,control,label,type="text",placeholder,required}) =>{
             <Input 
                 {...field} 
                 aria-invalid={fieldState.invalid} 
-                id={"signup-form-" + name} 
+                id={name} 
                 type={type} 
                 placeholder={placeholder}
                 required={required}>

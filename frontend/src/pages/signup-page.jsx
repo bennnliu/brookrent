@@ -23,9 +23,9 @@ import {
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useForm } from "react-hook-form"
-import WelcomeHeader from '../components/signup-page/welcome-header'
-import FormInput from "@/components/signup-page/form-input.jsx"
-import FormHeader from "@/components/signup-page/form-header.jsx"
+import WelcomeHeader from '../components/welcome-header'
+import FormInput from "@/components/form-input.jsx"
+import FormHeader from "@/components/form-header.jsx"
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
@@ -58,7 +58,7 @@ const SignUpPage = () => {
             <WelcomeHeader/>
             <div className="flex justify-center pt-5">
                 <Card className="w-full max-w-md">
-                    <FormHeader/>
+                    <FormHeader title="Sign Up" description="Enter your information to sign up" path="/auth/login" action="Login"/>
                     <FieldSeparator />
                     <CardContent>
                         <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
