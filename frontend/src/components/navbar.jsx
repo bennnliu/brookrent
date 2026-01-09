@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
-import { Logo } from "@/components/logo";
-import { Bold, Menu, X } from "lucide-react";
+import { Bold, HousePlusIcon, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { House } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   { name: "Browse Listings", href: "/listings" },
-  { name: "List Your Property", href: "/list-property" },
   { name: "Contact Us", href: "/contact" },
 ];
 
-export const HeroHeader = () => {
+const NavBar = () => {
   const [menuState, setMenuState] = React.useState(false);
 
   return (
@@ -27,9 +26,9 @@ export const HeroHeader = () => {
                 color: "rgb(153, 0, 0)",
               }}
             >
+              <House></House>
               <h1>BrookRent</h1>
 
-              {/* Mobile menu toggle */}
               <button
                 onClick={() => setMenuState(!menuState)}
                 aria-label={menuState ? "Close Menu" : "Open Menu"}
@@ -40,9 +39,8 @@ export const HeroHeader = () => {
               </button>
             </div>
 
-            {/* Desktop menu */}
             <div className="hidden lg:block">
-              <ul className="flex gap-8 text-sm">
+              <ul className="flex gap-20 text-sm">
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <Link
@@ -56,7 +54,6 @@ export const HeroHeader = () => {
               </ul>
             </div>
 
-            {/* Buttons and mobile menu */}
             <div
               className={cn(
                 "flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 lg:flex-row lg:items-center lg:w-auto",
@@ -64,7 +61,6 @@ export const HeroHeader = () => {
                 "lg:flex lg:block"
               )}
             >
-              {/* Mobile menu items */}
               <div className="lg:hidden mb-4">
                 <ul className="space-y-6 text-base">
                   {menuItems.map((item, index) => (
@@ -79,13 +75,14 @@ export const HeroHeader = () => {
                   ))}
                 </ul>
               </div>
-
-              {/* Buttons */}
               <Button
                 asChild
                 variant="outline"
                 size="sm"
                 className="bg-red-600 text-white hover:bg-red-700"
+                style={{
+                  backgroundColor: "rgb(153, 0, 0)",
+                }}
               >
                 <Link to="#">Become a lister</Link>
               </Button>
@@ -96,3 +93,4 @@ export const HeroHeader = () => {
     </header>
   );
 };
+export default NavBar;

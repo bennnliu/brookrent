@@ -1,37 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TextEffect } from "@/components/ui/text-effect";
-import { AnimatedGroup } from "@/components/ui/animated-group";
-import { HeroHeader } from "./header";
-import HomePageImage from "@/assets/homepage.jpg";
+import { Button } from "../components/ui/button";
+import { TextEffect } from "../components/ui/text-effect";
+import { AnimatedGroup } from "../components/ui/animated-group";
+import HomePageImage from "../assets/homepage.jpg";
 
 const transitionVariants = {
   item: {
-    hidden: {
-      opacity: 0,
-      filter: "blur(12px)",
-      y: 12,
-    },
+    hidden: { opacity: 0, filter: "blur(12px)", y: 12 },
     visible: {
       opacity: 1,
       filter: "blur(0px)",
       y: 0,
-      transition: {
-        type: "spring",
-        bounce: 0.3,
-        duration: 1.5,
-      },
+      transition: { type: "spring", bounce: 0.3, duration: 1.5 },
     },
   },
 };
 
-export default function HeroSection() {
+export default function HomePage() {
   return (
     <>
-      <HeroHeader />
-
       <main className="overflow-hidden">
         <div
           aria-hidden
@@ -93,29 +82,6 @@ export default function HeroSection() {
 
             <div className="mx-auto max-w-7xl px-6">
               <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
-                <AnimatedGroup variants={transitionVariants}>
-                  <Link
-                    to="/login"
-                    className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 dark:border-t-white/5 dark:shadow-zinc-950"
-                  >
-                    <span className="text-foreground text-sm">
-                      Discover Apartments, Houses, and Roommates nearby
-                    </span>
-                    <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
-
-                    <div className="bg-background group-hover:bg-muted size-6 overflow-hidden rounded-full duration-500">
-                      <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
-                        <span className="flex size-6">
-                          <ArrowRight className="m-auto size-3" />
-                        </span>
-                        <span className="flex size-6">
-                          <ArrowRight className="m-auto size-3" />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </AnimatedGroup>
-
                 <TextEffect
                   preset="fade-in-blur"
                   speedSegment={0.3}
@@ -164,7 +130,12 @@ export default function HeroSection() {
                     }}
                   >
                     <Link to="/login">
-                      <span className="text-nowrap">View properties</span>
+                      <span
+                        className="text-nowrap"
+                        style={{ fontSize: "26px" }}
+                      >
+                        View properties
+                      </span>
                     </Link>
                   </Button>
                 </AnimatedGroup>
