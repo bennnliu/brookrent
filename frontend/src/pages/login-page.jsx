@@ -28,6 +28,7 @@ import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
 import api from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const formSchema = z.object({
         email: z.email("Enter in a proper email address"),
@@ -36,6 +37,8 @@ const formSchema = z.object({
 
 
 function LoginPage() {
+  const [isExist,setIsExist] = useState(false)
+
   //Logic that will be implemented when the user clicks submit
   const navigate = useNavigate()
   const onSubmit = async (data) =>{
@@ -48,7 +51,8 @@ function LoginPage() {
           console.log(res)
       }
       catch(e){
-          console.log(e)
+        setIsExist(true)
+        console.log(e)
       }
   }
   //Create a form using react-hook-form and implements zod's validation data and default values
@@ -74,6 +78,7 @@ function LoginPage() {
                           <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" required/>
                       </FieldGroup>
                   </form>
+                  {isExist && <FieldError className="pt-4 text-sm">User does not exist</FieldError>} 
               </CardContent>
             <FieldSeparator />
             <CardFooter>

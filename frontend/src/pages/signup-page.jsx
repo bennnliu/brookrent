@@ -27,6 +27,8 @@ import WelcomeHeader from '../components/welcome-header'
 import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
 import api from '../lib/axios'
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
@@ -36,22 +38,26 @@ const formSchema = z.object({
         number: z.string().min(10, "Must be a valid phone number")
     })
 
-//Logic that will be implemented when the user clicks submit
-const onSubmit = async (data) =>{
-    try{
-        const res = await api.post("/user/signup", data)
-        localStorage.setItem("jwtToken", res.data.token)
-        localStorage.setItem("email",res.data.email)
-        localStorage.setItem("name", res.data.name)
-        console.log(res)
-    }
-    catch(e){
-        console.log(e)
-    }
-}
-
 //Signup Page
 const SignUpPage = () => {
+    const [isExist,setIsExist] = useState(false)
+
+    //Logic that will be implemented when the user clicks submit
+    const navigate = useNavigate()
+    const onSubmit = async (data) =>{
+        try{
+            const res = await api.post("/user/signup", data)
+            localStorage.setItem("jwtToken", res.data.token)
+            localStorage.setItem("email",res.data.email)
+            localStorage.setItem("name", res.data.name)
+            navigate('/lister/dashboard')
+            console.log(res)
+        }
+        catch(e){
+            setIsExist(true)
+            console.log(e)
+        }
+    }
 
     //Create a form using react-hook-form and implements zod's validation data and default values
     const form = useForm({
@@ -73,12 +79,13 @@ const SignUpPage = () => {
                     <CardContent>
                         <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
                             <FieldGroup className="space-y-0.5">
-                                <FormInput name="name" control={form.control} label="Name"type="text" />
-                                <FormInput name="email" control={form.control} label="Email" type="email" placeholder="johnnyappleseed@gmail.com" />
-                                <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" />
-                                <FormInput name="number" control={form.control} label="Number" type="tel" placeholder="(123)-456-7890" />
+                                <FormInput name="name" control={form.control} label="Name *"type="text" />
+                                <FormInput name="email" control={form.control} label="Email *" type="email" placeholder="johnnyappleseed@gmail.com" />
+                                <FormInput name="password" control={form.control} label="Password *" type="password" placeholder="●●●●●●●●" />
+                                <FormInput name="number" control={form.control} label="Number *" type="tel" placeholder="(123)-456-7890" />
                             </FieldGroup>
                         </form>
+                        {isExist && <FieldError className="pt-4 text-sm">User already exists</FieldError>} 
                     </CardContent>
                      <FieldSeparator />
                     <CardFooter>
@@ -87,8 +94,6 @@ const SignUpPage = () => {
                 </Card>
             </div>
         </div>
-        
- 
     )
 }
 

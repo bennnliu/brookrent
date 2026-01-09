@@ -14,9 +14,9 @@ const WelcomeHeader = () => {
     return(
         <div className="flex justify-center pt-10"> 
             <Card className="w-full max-w-md bg-[#990000]"> 
-                <CardContent className="flex items-center justify-center gap-3 text-2xl font-bold text-white"> 
-                    <Link to="/"><House className="w-12 h-12 transition-transform duration-200 hover:scale-110" /></Link>
-                    <span>Welcome to Brook Rents</span> 
+                <CardContent className="flex items-center justify-center gap-3"> 
+                    <Link to="/"><House className="w-14 h-14 transition-transform duration-200 hover:scale-110 text-white"/></Link>
+                    <span className="text-4xl font-bold text-white">Brook Rents</span> 
                 </CardContent> 
             </Card>
         </div>
