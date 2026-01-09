@@ -4,7 +4,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TextEffect } from "@/components/ui/text-effect";
 import { AnimatedGroup } from "@/components/ui/animated-group";
-import { HeroHeader } from "./header";
+import { Navbar } from "../components/navbar.jsx";
 import HomePageImage from "@/assets/homepage.jpg";
 
 const transitionVariants = {
@@ -27,10 +27,10 @@ const transitionVariants = {
   },
 };
 
-export default function HeroSection() {
+export default function HomePage() {
   return (
     <>
-      <HeroHeader />
+      <Navbar/>
 
       <main className="overflow-hidden">
         <div
@@ -163,7 +163,7 @@ export default function HeroSection() {
                       fontSize: "16px",
                     }}
                   >
-                    <Link to="/login">
+                    <Link to="/renter/properties">
                       <span className="text-nowrap">View properties</span>
                     </Link>
                   </Button>

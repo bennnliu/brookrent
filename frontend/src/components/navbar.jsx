@@ -11,7 +11,7 @@ const menuItems = [
   { name: "Contact Us", href: "/contact" },
 ];
 
-export const HeroHeader = () => {
+export const Navbar = () => {
   const [menuState, setMenuState] = React.useState(false);
 
   return (
@@ -87,7 +87,7 @@ export const HeroHeader = () => {
                 size="sm"
                 className="bg-red-600 text-white hover:bg-red-700"
               >
-                <Link to="#">Become a lister</Link>
+                <Link to="/auth/signup">Become a lister</Link>
               </Button>
             </div>
           </div>

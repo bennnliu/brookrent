@@ -1,17 +1,18 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
-import Homepage from "./pages/home-page.jsx";
+import HomePage from "./pages/home-page.jsx";
 import SignUpPage from "./pages/signup-page.jsx";
 import LoginPage from "./pages/login-page.jsx";
 import ErrorNotFound from "./pages/error-not-found.jsx";
 import ListerDashboardPage from "./pages/lister-dashboard-page";
+import PropertiesPage from "./pages/properties-page";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <HeroSection />,
+      element: <HomePage />,
       errorElement: <ErrorNotFound />,
     },
     {
@@ -23,10 +24,16 @@ function App() {
       element: <LoginPage />,
     },
     {
-      path: "/lister/dashboard",
-      element: <ListerDashboardPage />,
+      path:'/lister/dashboard',
+      element: <ListerDashboardPage/>
     },
-  ]);
-  return <RouterProvider router={router} />;
+    {
+      path:"/renter/properties",
+      element: <PropertiesPage/>
+    }
+])
+  return (
+    <RouterProvider router={router}/>
+  )
 }
 export default App;

@@ -14,7 +14,8 @@ const signUp = async (req, res) => {
         }
         //Create and set user's data
         const {name, email, password, number} = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         //Check if the user's email or number already exists
         const existing = await pool.query(`SELECT * FROM users WHERE email = $1 OR number = $2`, [email, number]);

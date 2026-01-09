@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import { ajDecision } from './middleware/arcjetMiddleware.js'; 
-import { db } from './config/neondb.js'; 
+import { db } from './config/neondb.js';
 
 const app = express();
 const port = 3000;
@@ -20,6 +20,7 @@ app.get("/api", (req,res) => {
         timestamp: new Date().toISOString()
     });
 });
+
 
 import listerRouter from './routes/listerRoutes.js';
 import renterRouter from './routes/renterRoutes.js';

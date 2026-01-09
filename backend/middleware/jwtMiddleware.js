@@ -15,15 +15,14 @@ const verifyToken = (req,res,next)=> {
 
     //Verifes jwt token 
     try{
-        req.user = jwt.verify(jwt_token, JWT_SECRET, (e, decoded) => {
-            if(e.name === "TokenExpiredError"){
-                return res.status(403).json({ message: "Token expired, please login again" });
-            }
-            req.user = decoded
-            next()
-        })
+        req.user = jwt.verify(jwt_token, JWT_SECRET)
+        next()
+            
     }
     catch(e){
+        if (err.name === 'TokenExpiredError') {
+            return res.status(403).json({ message: "Token expired, please login again" });
+        }
         return res.status(404).json({message: "Invalid token"})
     }
 }
