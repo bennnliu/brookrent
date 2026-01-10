@@ -1,44 +1,29 @@
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import { jwtDecode } from "jwt-decode";
 
 const devURL = 'http://localhost:3000/api'
-const prodURL = '/api'
-
-export const isTokenExpired = (token) => {
-    if(!token) return true
-    try{
-        const decoded = jwtDecode(token)
-        if(decoded.exp < (Date.now() / 1000)) return true
-        return false
-    }
-    catch(e){
-        console.log(e)
-        return false
-    }
-}
+const prodURL = '/api' 
 
 const api = axios.create({
-    baseURL: devURL
+    baseURL: devURL,
+    withCredentials: true, 
 })
 
 api.interceptors.request.use((req) => {
-
-    const token = localStorage.getItem("jwtToken")
-    if(token){
-        if(isTokenExpired(token)){
-            localStorage.removeItem('jwtToken')
-            localStorage.removeItem('email')
-            localStorage.removeItem('name')
-            window.location.href = '/auth/login';
-        }
-        req.headers.Authorization = `Bearer ${token}`
-    }
     return req
+}, (error) => {
+    return Promise.reject(error)
+})
+
+api.interceptors.response.use(
+    (res) => {
+        return res;
     },
     (error) => {
-        return Promise.reject(error)
+        if (error.response && error.response.status === 401) {
+           window.location.replace('/auth/login');
+        }
+        return Promise.reject(error);
     }
-)
+);
 
 export default api

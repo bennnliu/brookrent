@@ -3,17 +3,21 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { ajDecision } from './middleware/arcjetMiddleware.js'; 
 import { db } from './config/neondb.js';
 
 const app = express();
 const port = 3000;
 
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:5173', //Replace for production
+  credentials: true,}))
 app.use(morgan('dev'))
 app.use(helmet());
 app.use(ajDecision);
 app.use(express.json());
+app.use(cookieParser())
 app.get("/api", (req,res) => {
     res.json({
         message: "API is running",

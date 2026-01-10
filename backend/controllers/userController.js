@@ -3,7 +3,7 @@ import { pool } from '../config/neondb.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const {JWT_SECRET} = process.env
+const {JWT_SECRET, NODE_ENV} = process.env
 
 const signUp = async (req, res) => {
     try{ 
@@ -68,7 +68,12 @@ const login = async (req, res) => {
         const user_data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
         const payload = {listerId: user_data.rows[0].id, email: user_data.rows[0].email, role: user_data.rows[0].role}
         const token = jwt.sign(payload, JWT_SECRET,{expiresIn: "1h" })
-        return res.status(200).json({email: user_data.rows[0].email, name: user_data.rows[0].name, token: token});   
+        return res.status(200).json({email: user_data.rows[0].email, name: user_data.rows[0].name}).cookie('jwtToken', token, {
+            httpOnly: true, 
+            secure: NODE_ENV === 'production',
+            maxAge: 3600000,
+            sameSite: 'Strict' 
+        });   
     }
     catch(e){
         res.status(404).send(e)

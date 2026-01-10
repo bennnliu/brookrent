@@ -3,15 +3,11 @@ import jwt from 'jsonwebtoken';
 const {JWT_SECRET} = process.env
 
 const verifyToken = (req,res,next)=> {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies.jwtToken;
 
-    //Checks if auth is empty
-    if (!authHeader) {
-        return res.status(400).json({ message: "Missing Authorization header" });
+    if (!token) {
+        return res.status(401).json({ message: "No token, authorization denied" });
     }
-
-    //Removes "Bearer" string from token
-    const jwt_token = authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
 
     //Verifes jwt token 
     try{
@@ -20,7 +16,7 @@ const verifyToken = (req,res,next)=> {
             
     }
     catch(e){
-        if (err.name === 'TokenExpiredError') {
+        if (e.name === 'TokenExpiredError') {
             return res.status(403).json({ message: "Token expired, please login again" });
         }
         return res.status(404).json({message: "Invalid token"})
