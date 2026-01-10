@@ -29,6 +29,7 @@ import FormHeader from "@/components/form-header.jsx"
 import api from '../lib/axios'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {Spinner} from "@/components/ui/spinner.jsx";
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
@@ -41,11 +42,13 @@ const formSchema = z.object({
 //Signup Page
 const SignUpPage = () => {
     const [isExist,setIsExist] = useState(false)
+    const [isSignedUp,setIsSignedUp] = useState(false)
 
     //Logic that will be implemented when the user clicks submit
     const navigate = useNavigate()
     const onSubmit = async (data) =>{
         try{
+            setIsSignedUp(true)
             const res = await api.post("/user/signup", data)
             localStorage.setItem("jwtToken", res.data.token)
             localStorage.setItem("email",res.data.email)
@@ -56,6 +59,9 @@ const SignUpPage = () => {
         catch(e){
             setIsExist(true)
             console.log(e)
+        }
+        finally{
+             setIsSignedUp(false)
         }
     }
 
@@ -89,7 +95,15 @@ const SignUpPage = () => {
                     </CardContent>
                      <FieldSeparator />
                     <CardFooter>
-                        <Button type="submit" form="signup-form"className="mx-auto bg-[#990000] hover:bg-[#6B000D]">Sign Up</Button>
+                        <Button 
+                            type="submit" 
+                            form="signup-form" 
+                            disabled={isSignedUp} 
+                            className="mx-auto bg-[#990000] hover:bg-[#6B000D] flex items-center gap-2"
+                        >
+                            {isSignedUp && <Spinner />}
+                            Sign Up
+                        </Button>
                     </CardFooter>
                 </Card>
             </div>

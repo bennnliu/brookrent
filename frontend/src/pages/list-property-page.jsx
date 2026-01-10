@@ -30,6 +30,8 @@ import FormHeader from "@/components/form-header.jsx"
 import api from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
 import FormImageUpload from '@/components/form-image-upload';
+import {Spinner} from "@/components/ui/spinner.jsx";
+import { useState } from 'react';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -48,10 +50,12 @@ const formSchema = z.object({
 })
 
 function ListPropertyPage() {
+  const [isListed,setIsListed] = useState(false)
   const navigate = useNavigate()
 
   const onSubmit = async (data)=>{
     try{
+      setIsListed(true)
       const formData = new FormData();
 
       formData.append("title", data.title);
@@ -71,6 +75,9 @@ function ListPropertyPage() {
     }
     catch(e){
       console.log(e)
+    }
+    finally{
+       setIsListed(false)
     }
   }
   const form = useForm({
@@ -104,7 +111,15 @@ function ListPropertyPage() {
               </CardContent>
             <FieldSeparator />
             <CardFooter>
-                <Button type="submit" form="list-property-form" className="mx-auto bg-[#990000] hover:bg-[#6B000D]">List Property</Button>
+                      <Button 
+                            type="submit" 
+                            form="list-property-form" 
+                            disabled={isListed} 
+                            className="mx-auto bg-[#990000] hover:bg-[#6B000D] flex items-center gap-2"
+                        >
+                            {isListed && <Spinner />}
+                            List Property
+                        </Button>
             </CardFooter>
           </Card>
 

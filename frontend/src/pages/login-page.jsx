@@ -29,6 +29,7 @@ import FormHeader from "@/components/form-header.jsx"
 import api from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {Spinner} from "@/components/ui/spinner.jsx";
 
 const formSchema = z.object({
         email: z.email("Enter in a proper email address"),
@@ -38,21 +39,24 @@ const formSchema = z.object({
 
 function LoginPage() {
   const [isExist,setIsExist] = useState(false)
+  const [isLogin,setIsLogin] = useState(false)
 
   //Logic that will be implemented when the user clicks submit
   const navigate = useNavigate()
   const onSubmit = async (data) =>{
       try{
+         setIsLogin(true)
           const res = await api.post("/user/login", data)
           localStorage.setItem("jwtToken", res.data.token)
           localStorage.setItem("email",res.data.email)
           localStorage.setItem("name", res.data.name)
           navigate('/lister/dashboard')
-          console.log(res)
       }
       catch(e){
-        setIsExist(true)
-        console.log(e)
+        setIsExist(false)
+      }
+      finally{
+        setIsLogin(false)
       }
   }
   //Create a form using react-hook-form and implements zod's validation data and default values
@@ -78,11 +82,19 @@ function LoginPage() {
                           <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" required/>
                       </FieldGroup>
                   </form>
-                  {isExist && <FieldError className="pt-4 text-sm">User does not exist</FieldError>} 
+                  {!isExist && <FieldError className="pt-4 text-sm">User does not exist</FieldError>} 
               </CardContent>
             <FieldSeparator />
             <CardFooter>
-                <Button type="submit" form="login-form"className="mx-auto bg-[#990000] hover:bg-[#6B000D]">Login</Button>
+              <Button 
+                type="submit" 
+                form="login-form" 
+                disabled={isLogin} 
+                className="mx-auto bg-[#990000] hover:bg-[#6B000D] flex items-center gap-2"
+              >
+                {isLogin && <Spinner />}
+                Login
+              </Button>
             </CardFooter>
           </Card>
 
