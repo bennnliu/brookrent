@@ -51,7 +51,7 @@ const createListing = async (req, res) => {
         return res.status(200).json(result.rows[0]);
     }
     catch(e){
-        console.status(404).error(e)
+        res.status(404).error(e)
     }
 }
 

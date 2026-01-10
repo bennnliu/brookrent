@@ -10,11 +10,7 @@ const menuItems = [
   { name: "Contact Us", href: "/contact" },
 ];
 
-<<<<<<< HEAD
-export const Navbar = () => {
-=======
 const NavBar = () => {
->>>>>>> c84797bbd825a8bdc8bcf3ef6cfad73494c4d121
   const [menuState, setMenuState] = React.useState(false);
 
   return (
@@ -88,7 +84,7 @@ const NavBar = () => {
                   backgroundColor: "rgb(153, 0, 0)",
                 }}
               >
-                <Link to="/auth/signup">Become a lister</Link>
+                <Link to="/lister/list">Become a lister</Link>
               </Button>
             </div>
           </div>

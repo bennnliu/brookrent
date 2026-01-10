@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 const devURL = 'http://localhost:3000/api'
 const prodURL = '/api'
 
-const isTokenExpired = (token) => {
+export const isTokenExpired = (token) => {
     if(!token) return true
     try{
         const decoded = jwtDecode(token)

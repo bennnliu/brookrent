@@ -35,7 +35,7 @@ const formSchema = z.object({
         name: z.string("Name is required" ),
         email: z.email("Enter in a proper email address"),
         password: z.string().min(8,"Password must be minimum 8 characters."),
-        number: z.string().min(10, "Must be a valid phone number")
+        number: z.string().min(10,"Must be a valid phone number").max(14, "Must be a valid phone number")
     })
 
 //Signup Page

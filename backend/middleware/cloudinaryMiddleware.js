@@ -22,11 +22,12 @@ export const uploadImage = (req, res, next) => {
             if (e.code === 'LIMIT_FILE_SIZE') {
                 return res.status(413).json({ error: 'File too large. Max size is 5MB.' });
             }
-            return res.status(404).json({ error: err.message });
+            return res.status(404).json({ error: e.message });
         }
         try {
-            if (!req.files) {
-                return next()
+           if (!req.files || req.files.length === 0) {
+                req.image_urls = []; 
+                return next();
             }
             const result = await Promise.all(req.files.map(file => 
                 new Promise((resolve, reject) => {

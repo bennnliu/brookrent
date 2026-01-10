@@ -4,7 +4,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TextEffect } from "@/components/ui/text-effect";
 import { AnimatedGroup } from "@/components/ui/animated-group";
-import { Navbar } from "../components/navbar.jsx";
+import NavBar from "@/components/navbar.jsx";
 import HomePageImage from "@/assets/homepage.jpg";
 
 const transitionVariants = {
@@ -22,7 +22,7 @@ const transitionVariants = {
 export default function HomePage() {
   return (
     <>
-      <Navbar/>
+      <NavBar/>
       <main className="overflow-hidden">
         <div
           aria-hidden
