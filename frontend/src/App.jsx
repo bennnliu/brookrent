@@ -9,24 +9,26 @@ import ListerDashboardPage from "./pages/lister-dashboard-page.jsx";
 import PropertiesPage from "./pages/properties-page.jsx";
 import ContactPage from "./pages/contact-page.jsx";
 import HomePage from "./pages/home-page.jsx";
-import RootLayout from "./pages/root-layout.jsx";
+import RootLayout from "./components/root-layout";
 import ListPropertyPage from "./pages/list-property-page";
+import api from "./lib/axios";
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/auth/me", {
-      credentials: "include",
-    })
+    api
+      .get("/user/userdata", {})
       .then((res) => {
-        if (!res.ok) throw new Error();
-        return res.json();
+        setUser(res.data);
       })
-      .then((data) => setUser(data))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const router = createBrowserRouter([

@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import api from "@/lib/axios";
 import Logo from "@/assets/logoWITHOUTname.png";
 import { cn } from "@/lib/utils";
 
@@ -12,13 +13,16 @@ const menuItems = [
 
 const NavBar = ({ user, setUser, loading }) => {
   const [menuState, setMenuState] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await fetch("http://localhost:3000/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-    setUser(null);
+    try {
+      await api.post("/auth/logout");
+      setUser(null);
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
   };
 
   return (
@@ -34,7 +38,6 @@ const NavBar = ({ user, setUser, loading }) => {
               <h1>BrookRent</h1>
             </Link>
 
-            {/* Desktop menu */}
             <ul className="hidden lg:flex gap-20 text-sm">
               {menuItems.map((item) => (
                 <li key={item.name}>
@@ -48,7 +51,6 @@ const NavBar = ({ user, setUser, loading }) => {
               ))}
             </ul>
 
-            {/* Auth section */}
             {!loading && (
               <div className="hidden lg:flex items-center gap-4">
                 {user ? (
@@ -75,9 +77,11 @@ const NavBar = ({ user, setUser, loading }) => {
                 )}
               </div>
             )}
+
             <button
               onClick={() => setMenuState(!menuState)}
               className="lg:hidden p-2"
+              aria-label="Toggle menu"
             >
               {menuState ? <X /> : <Menu />}
             </button>
