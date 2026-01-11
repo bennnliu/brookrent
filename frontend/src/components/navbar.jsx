@@ -6,11 +6,7 @@ import Logo from "@/assets/logoWITHOUTname.png";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-<<<<<<< Updated upstream
   { name: "Browse Listings", href: "/renter/properties" },
-=======
-  { name: "Browse Properties", href: "/listings" },
->>>>>>> Stashed changes
   { name: "Contact Us", href: "/contact" },
 ];
 
@@ -78,20 +74,6 @@ const NavBar = ({ user, setUser, loading }) => {
                   </Button>
                 )}
               </div>
-<<<<<<< Updated upstream
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="bg-red-600 text-white hover:bg-red-700"
-                style={{
-                  backgroundColor: "rgb(153, 0, 0)",
-                }}
-              >
-                <Link to="/auth/signup">Become a lister</Link>
-              </Button>
-            </div>
-=======
             )}
             <button
               onClick={() => setMenuState(!menuState)}
@@ -99,7 +81,6 @@ const NavBar = ({ user, setUser, loading }) => {
             >
               {menuState ? <X /> : <Menu />}
             </button>
->>>>>>> Stashed changes
           </div>
         </div>
       </nav>

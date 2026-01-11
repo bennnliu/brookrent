@@ -14,4 +14,5 @@ const RootLayout = ({ user, setUser, loading }) => {
     </div>
   );
 };
+
 export default RootLayout;
