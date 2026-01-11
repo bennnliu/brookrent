@@ -24,6 +24,8 @@ function ListerDashboardPage() {
     const [loading, setLoading] = useState(true)
     const [role, setRole] = useState("")
 
+    
+
     useEffect(()=>{
         const getProperties = async() => {
             try{
@@ -53,6 +55,17 @@ function ListerDashboardPage() {
         }
         getProperties()
     },[])
+
+    const handleRemoveProperty = (id) => {
+        const updatedList = properties.filter((property) => property.id !== id);
+        
+        setProperties(updatedList);
+
+        if (updatedList.length === 0) {
+            setHasListings(false);
+            setMessage("No Listings Available");
+        }
+    };
 
   return (
     <div className="flex flex-col gap-25">
@@ -84,7 +97,10 @@ function ListerDashboardPage() {
                         <CardContent>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                 {properties.map((property) => (
-                                    <ListingsItem key={property.id} property={property} />
+                                    <ListingsItem key={property.id} 
+                                    property={property} 
+                                    onDelete={handleRemoveProperty}
+                                    />
                                 ))}
                             </div>
                         </CardContent>:

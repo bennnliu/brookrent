@@ -10,6 +10,7 @@ import ContactPage from "./pages/contact-page.jsx";
 import HomePage from "./pages/home-page.jsx";
 import RootLayout from "./pages/root-layout.jsx";
 import ListPropertyPage from "./pages/list-property-page";
+import UpdatePropertyPage from "./pages/update-property-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,6 +22,8 @@ function App() {
         { path: "/auth/login", element: <LoginPage /> },
         { path: "/lister/dashboard", element: <ListerDashboardPage /> },
         { path: "/admin/dashboard", element: <ListerDashboardPage/>},
+        { path: "/lister/update", element: <UpdatePropertyPage /> },
+        { path: "/admin/update", element: <UpdatePropertyPage/>},
         { path: "/renter/properties", element: <PropertiesPage /> },
         { path: "/lister/list", element: <ListPropertyPage/> },
         { path: "/admin/list", element: <ListPropertyPage/> },

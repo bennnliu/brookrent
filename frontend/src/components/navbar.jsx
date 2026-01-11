@@ -6,7 +6,7 @@ import { House } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { name: "Browse Listings", href: "/listings" },
+  { name: "Browse Listings", href: "/renter/properties" },
   { name: "Contact Us", href: "/contact" },
 ];
 
@@ -84,7 +84,7 @@ const NavBar = () => {
                   backgroundColor: "rgb(153, 0, 0)",
                 }}
               >
-                <Link to="/lister/list">Become a lister</Link>
+                <Link to="/auth/signup">Become a lister</Link>
               </Button>
             </div>
           </div>

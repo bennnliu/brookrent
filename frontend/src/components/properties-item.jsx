@@ -53,7 +53,7 @@ function PropertiesItem({property}) {
                           <span className="text-sm font-medium text-gray-500 ml-1">/mo</span>
                       </div>
 
-                      <ItemTitle className="text-lg font-bold text-gray-900 truncate">
+                      <ItemTitle className="text-sm  text-gray-900 truncate">
                           {property.title}
                       </ItemTitle>
                       

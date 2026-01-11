@@ -81,7 +81,7 @@ function LoginPage() {
                           <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" required/>
                       </FieldGroup>
                   </form>
-                  {!isExist && <FieldError className="pt-4 text-sm">User does not exist</FieldError>} 
+                  {!isExist && <FieldError className="pt-4 text-sm">Invalid Credentials</FieldError>} 
               </CardContent>
             <FieldSeparator />
             <CardFooter>
