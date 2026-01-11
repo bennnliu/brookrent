@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { House } from "lucide-react";
+import Logo from "@/assets/logoWITHOUTname.png";
 
 const links = [
   { title: "Customers", href: "#" },
@@ -9,10 +10,10 @@ const links = [
 
 export default function FooterSection() {
   return (
-    <footer className="py-16 md:py-32 bg-background">
+    <footer className="py-7 md:py-7 bg-background">
       <div className="mx-auto max-w-5xl px-6 text-center">
         <div className="flex items-center justify-center gap-2 text-[rgb(153,0,0)] mb-6">
-          <House className="size-6" />
+          <img src={Logo} alt="BrookRent Logo" className="h-8 w-auto" />
           <h1 className="text-xl font-serif">BrookRent</h1>
         </div>
 

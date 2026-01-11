@@ -85,9 +85,11 @@ export default function HomePage() {
       <section className="relative z-20 mt-20 px-6 pb-16 md:pb-32">
         <div className="max-w-7xl mx-auto">
           <h2
-            className="text-3xl font-bold mb-8"
+            className="text-3xl md:text-4xl font-bold mb-8 text-center"
             style={{ color: "white" }}
-          ></h2>
+          >
+            Featured Properties
+          </h2>
 
           {loading ? (
             <p className="text-white">Loading properties...</p>

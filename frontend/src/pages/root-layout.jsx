@@ -3,14 +3,15 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../components/navbar.jsx";
 import FooterSection from "../components/footer.jsx";
 
-export default function RootLayout() {
+const RootLayout = ({ user, setUser, loading }) => {
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar />
+      <NavBar user={user} setUser={setUser} loading={loading} />
       <main className="grow mt-20">
-        <Outlet /> 
+        <Outlet />
       </main>
       <FooterSection />
     </div>
   );
-}
+};
+export default RootLayout;

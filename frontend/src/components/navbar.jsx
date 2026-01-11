@@ -1,80 +1,84 @@
 import { Link } from "react-router-dom";
-import { Bold, HousePlusIcon, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { House } from "lucide-react";
+import Logo from "@/assets/logoWITHOUTname.png";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
+<<<<<<< Updated upstream
   { name: "Browse Listings", href: "/renter/properties" },
+=======
+  { name: "Browse Properties", href: "/listings" },
+>>>>>>> Stashed changes
   { name: "Contact Us", href: "/contact" },
 ];
 
-const NavBar = () => {
+const NavBar = ({ user, setUser, loading }) => {
   const [menuState, setMenuState] = React.useState(false);
+
+  const handleLogout = async () => {
+    await fetch("http://localhost:3000/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    setUser(null);
+  };
 
   return (
     <header>
-      <nav className="fixed z-20 w-full bg-white border-b border-gray-200 px-2">
+      <nav className="fixed z-50 w-full bg-white border-b border-gray-200 px-2">
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
-          <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-            <div
-              className="flex w-full justify-between lg:w-auto"
-              style={{
-                fontWeight: "bold",
-                fontFamily: "serif",
-                color: "rgb(153, 0, 0)",
-              }}
+          <div className="flex items-center justify-between py-4">
+            <Link
+              to="/"
+              className="flex items-center gap-2 font-bold text-[rgb(153,0,0)]"
             >
-              <House></House>
+              <img src={Logo} alt="BrookRent Logo" className="h-8 w-auto" />
               <h1>BrookRent</h1>
+            </Link>
 
-              <button
-                onClick={() => setMenuState(!menuState)}
-                aria-label={menuState ? "Close Menu" : "Open Menu"}
-                className="relative z-20 block lg:hidden p-2.5 -m-2.5"
-              >
-                <Menu className={cn(menuState && "hidden")} />
-                <X className={cn(!menuState && "hidden")} />
-              </button>
-            </div>
+            {/* Desktop menu */}
+            <ul className="hidden lg:flex gap-20 text-sm">
+              {menuItems.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-gray-700 hover:text-red-600"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-            <div className="hidden lg:block">
-              <ul className="flex gap-20 text-sm">
-                {menuItems.map((item, index) => (
-                  <li key={index}>
-                    <Link
-                      to={item.href}
-                      className="text-gray-700 hover:text-red-600 block duration-150"
+            {/* Auth section */}
+            {!loading && (
+              <div className="hidden lg:flex items-center gap-4">
+                {user ? (
+                  <>
+                    <span className="text-gray-700">
+                      Hi, <strong>{user.name}</strong>
+                    </span>
+                    <Button
+                      size="sm"
+                      className="bg-gray-800 hover:bg-gray-900 text-white"
+                      onClick={handleLogout}
                     >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div
-              className={cn(
-                "flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 lg:flex-row lg:items-center lg:w-auto",
-                menuState ? "block" : "hidden",
-                "lg:flex lg:block"
-              )}
-            >
-              <div className="lg:hidden mb-4">
-                <ul className="space-y-6 text-base">
-                  {menuItems.map((item, index) => (
-                    <li key={index}>
-                      <Link
-                        to={item.href}
-                        className="text-gray-700 hover:text-red-600 block duration-150"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                      Sign out
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    asChild
+                    size="sm"
+                    className="bg-[rgb(153,0,0)] hover:bg-[rgb(120,0,0)] text-white"
+                  >
+                    <Link to="/lister/list">Become a lister</Link>
+                  </Button>
+                )}
               </div>
+<<<<<<< Updated upstream
               <Button
                 asChild
                 variant="outline"
@@ -87,10 +91,20 @@ const NavBar = () => {
                 <Link to="/auth/signup">Become a lister</Link>
               </Button>
             </div>
+=======
+            )}
+            <button
+              onClick={() => setMenuState(!menuState)}
+              className="lg:hidden p-2"
+            >
+              {menuState ? <X /> : <Menu />}
+            </button>
+>>>>>>> Stashed changes
           </div>
         </div>
       </nav>
     </header>
   );
 };
+
 export default NavBar;

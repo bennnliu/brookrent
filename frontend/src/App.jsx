@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./index.css";
 
 import SignUpPage from "./pages/signup-page.jsx";
@@ -13,9 +14,31 @@ import ListPropertyPage from "./pages/list-property-page";
 import UpdatePropertyPage from "./pages/update-property-page";
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check login status on refresh
+  useEffect(() => {
+    fetch("http://localhost:3000/auth/me", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Not logged in");
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
+  }, []);
+
   const router = createBrowserRouter([
     {
+<<<<<<< Updated upstream
       element: <RootLayout />,
+=======
+      element: <RootLayout user={user} setUser={setUser} loading={loading} />,
+      errorElement: <ErrorNotFound />,
+>>>>>>> Stashed changes
       children: [
         { index: true, element: <HomePage /> },
         { path: "/auth/signup", element: <SignUpPage /> },
@@ -25,8 +48,12 @@ function App() {
         { path: "/lister/update", element: <UpdatePropertyPage /> },
         { path: "/admin/update", element: <UpdatePropertyPage/>},
         { path: "/renter/properties", element: <PropertiesPage /> },
+<<<<<<< Updated upstream
         { path: "/lister/list", element: <ListPropertyPage/> },
         { path: "/admin/list", element: <ListPropertyPage/> },
+=======
+        { path: "/lister/list", element: <ListPropertyPage /> },
+>>>>>>> Stashed changes
         { path: "/contact", element: <ContactPage /> },
       ],
       errorElement: <ErrorNotFound />,
