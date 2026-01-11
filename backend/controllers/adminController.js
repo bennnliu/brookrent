@@ -10,6 +10,30 @@ const getListings = async (req,res) => {
     }
 }
 
+const getListing = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const query = `
+            SELECT p.*, 
+                   json_build_object('name', u.name, 'email', u.email, 'number', u.number) as lister 
+            FROM properties p
+            JOIN users u ON p.lister_id = u.id
+            WHERE p.id = $1
+        `;
+        const result = await pool.query(query, [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Listing does not exist" });
+        }
+
+        return res.status(200).json(result.rows[0]);
+        
+    } catch (e) {
+        console.error(e);
+        res.status(500).send(e);
+    }
+}
+
 const createListing = async (req, res) => {
     try{
         //Gathers data 
@@ -65,7 +89,7 @@ const deleteListing = async (req, res) => {
             return res.json({message: "Listing does not exist"})
         }
 
-        pool.query(`DELETE FROM properties WHERE id = $1`,[id])
+        await pool.query(`DELETE FROM properties WHERE id = $1`,[id])
         return res.status(200).json({message: "Listing deleted"})
 
     }
@@ -74,4 +98,4 @@ const deleteListing = async (req, res) => {
     }
 }
 
-export {getListings, createListing, updateListing, deleteListing}
+export {getListings,getListing, createListing, updateListing, deleteListing}

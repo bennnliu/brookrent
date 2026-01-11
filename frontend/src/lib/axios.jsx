@@ -20,7 +20,7 @@ api.interceptors.response.use(
     },
     (error) => {
         if (error.response && error.response.status === 401) {
-           window.location.replace('/auth/login');
+           
         }
         return Promise.reject(error);
     }

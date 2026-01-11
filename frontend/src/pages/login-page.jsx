@@ -23,7 +23,6 @@ import {
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useForm } from "react-hook-form"
-import WelcomeHeader from '../components/welcome-header'
 import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
 import api from "@/lib/axios";
@@ -38,19 +37,20 @@ const formSchema = z.object({
 
 
 function LoginPage() {
-  const [isExist,setIsExist] = useState(false)
+  const [isExist,setIsExist] = useState(true)
   const [isLogin,setIsLogin] = useState(false)
 
   //Logic that will be implemented when the user clicks submit
   const navigate = useNavigate()
   const onSubmit = async (data) =>{
       try{
-         setIsLogin(true)
-          const res = await api.post("/user/login", data)
-          localStorage.setItem("jwtToken", res.data.token)
-          localStorage.setItem("email",res.data.email)
-          localStorage.setItem("name", res.data.name)
-          navigate('/lister/dashboard')
+          setIsLogin(true)
+          await api.post("/user/login", data)
+          const userData = await api.get("/user/userdata")
+          switch(userData.data.role){
+            case "admin": navigate('/admin/dashboard');break;
+            case "lister": navigate('/lister/dashboard');break;
+                }
       }
       catch(e){
         setIsExist(false)
@@ -70,7 +70,6 @@ function LoginPage() {
 
   return (
     <div>
-        <WelcomeHeader/>
         <div className="flex justify-center pt-5">
           <Card className="w-full max-w-md">
             <FormHeader title="Login" description="Enter your information to login" path="/auth/signup"action="Sign Up"/>

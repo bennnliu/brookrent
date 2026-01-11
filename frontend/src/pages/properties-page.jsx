@@ -1,5 +1,4 @@
 import React from 'react'
-import NavBar  from "../components/navbar.jsx"
 import PropertiesItem from '@/components/properties-item.jsx'
 import {
   Card,
@@ -37,7 +36,6 @@ function PropertiesPage() {
 
     return (
         <div className="flex flex-col gap-25">
-            <NavBar/>
             {loading && 
                 <div className="flex flex-col items-center justify-center space-y-10 pt-35">
                     <Skeleton className="h-40 w-250 rounded-xl" />

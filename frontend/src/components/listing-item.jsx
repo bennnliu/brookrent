@@ -15,18 +15,23 @@ import {
 import { Separator } from './ui/separator'
 import { MapPin, Mail, Phone, User, Home } from 'lucide-react'
 
-function PropertiesItem({property}) { 
+function ListingsItem({property}) { 
   const [isOpen,setIsOpen] = useState(false)
   const [details, setDetails] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
     setIsOpen(true)
-    if (!details) { 
+    if (!details) {
         setLoading(true)
         try {
+            const userData = await api.get("/user/userdata")
+            let res = null
             const id = property.id
-            const res = await api.get(`/renter/properties/${id}`)
+            switch(userData.data.role){
+                    case "admin":  res = await api.get(`/admin/listings/${id}`);break;
+                    case "lister": res = await api.get(`/lister/listings/${id}`);break;
+            }
             setDetails(res.data)
             console.log(res.data)
         } catch (error) {
@@ -144,4 +149,4 @@ function PropertiesItem({property}) {
   )
 }
 
-export default PropertiesItem
+export default ListingsItem

@@ -11,7 +11,7 @@ const verifyToken = (req,res,next)=> {
 
     //Verifes jwt token 
     try{
-        req.user = jwt.verify(jwt_token, JWT_SECRET)
+        req.user = jwt.verify(token, JWT_SECRET)
         next()
             
     }

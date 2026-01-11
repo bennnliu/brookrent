@@ -23,7 +23,6 @@ import {
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useForm } from "react-hook-form"
-import WelcomeHeader from '../components/welcome-header'
 import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
 import api from '../lib/axios'
@@ -76,8 +75,7 @@ const SignUpPage = () => {
             },
         })
     return(
-        <div > 
-            <WelcomeHeader/>
+        <div >
             <div className="flex justify-center pt-5">
                 <Card className="w-full max-w-md">
                     <FormHeader title="Sign Up" description="Enter your information to sign up" path="/auth/login" action="Login"/>

@@ -68,15 +68,30 @@ const login = async (req, res) => {
         const user_data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
         const payload = {listerId: user_data.rows[0].id, email: user_data.rows[0].email, role: user_data.rows[0].role}
         const token = jwt.sign(payload, JWT_SECRET,{expiresIn: "1h" })
-        return res.status(200).json({email: user_data.rows[0].email, name: user_data.rows[0].name}).cookie('jwtToken', token, {
+        return res.cookie('jwtToken', token, {
             httpOnly: true, 
             secure: NODE_ENV === 'production',
             maxAge: 3600000,
             sameSite: 'Strict' 
-        });   
+        }).status(200).send();   
     }
     catch(e){
         res.status(404).send(e)
     }
 }
-export { signUp, login };
+
+const getUserData = async (req, res) => {
+    try{
+        const listerId = req.user.listerId
+        const userData =  await pool.query(`SELECT name, email, role FROM users WHERE id = $1`, [listerId])
+        if (userData.rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.send(userData.rows[0]);
+    } catch (e) {
+        console.error("Error getting user data:", e.message); 
+        res.status(500).send(e);
+    }
+}
+
+export { signUp, login , getUserData};

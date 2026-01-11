@@ -24,7 +24,6 @@ import {
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useForm } from "react-hook-form"
-import WelcomeHeader from '../components/welcome-header'
 import FormInput from "@/components/form-input.jsx"
 import FormHeader from "@/components/form-header.jsx"
 import api from "@/lib/axios";
@@ -52,12 +51,12 @@ const formSchema = z.object({
 function ListPropertyPage() {
   const [isListed,setIsListed] = useState(false)
   const navigate = useNavigate()
-
+  
   const onSubmit = async (data)=>{
     try{
       setIsListed(true)
       const formData = new FormData();
-
+      
       formData.append("title", data.title);
       formData.append("price", data.price);
       formData.append("address", data.address);
@@ -68,9 +67,13 @@ function ListPropertyPage() {
           formData.append("photos", file);
         });
       }
-
-      const res = await api.post("/lister/list", formData)
-      navigate('/lister/dashboard')
+      
+      const userData = await api.get("/user/userdata")
+      switch(userData.data.role){
+        case "admin":  res = await api.post("/admin/list", formData); navigate('/admin/dashboard'); break;
+        case "lister": res = await api.post("/lister/list", formData);  navigate('/lister/dashboard'); break;
+      }
+     
       console.log(res)
     }
     catch(e){
@@ -93,7 +96,6 @@ function ListPropertyPage() {
 
   return (
     <div>
-        <WelcomeHeader/>
           <div className="flex justify-center pt-5">
           <Card className="w-full max-w-md">
             <FormHeader title="List Property" description="Enter your property's information" />

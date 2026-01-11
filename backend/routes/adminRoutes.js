@@ -5,12 +5,14 @@ import { uploadImage } from '../middleware/cloudinaryMiddleware.js';
 import {isAdmin} from '../middleware/isAdminMiddleWare.js'
 
 const router = express.Router()
-
 router.use(verifyToken)
+router.use(isAdmin)
 
-router.get("/listings", isAdmin,adminController.getListings)
-router.post("/list",isAdmin,uploadImage,adminController.createListing)
-router.put("/listings/:id",isAdmin,uploadImage,adminController.updateListing)
-router.delete("/listings/:id",isAdmin,adminController.deleteListing)
+
+router.get("/listings",adminController.getListings)
+router.get("/listings/:id",adminController.getListing)
+router.post("/list",uploadImage,adminController.createListing)
+router.put("/listings/:id",uploadImage,adminController.updateListing)
+router.delete("/listings/:id",adminController.deleteListing)
 
 export default router
