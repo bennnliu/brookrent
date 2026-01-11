@@ -70,7 +70,7 @@ function ListingsItem({property, onDelete}) {
         const userData = await api.get("/user/userdata");
         const role = userData.data.role;
         
-        navigate(`/${role}/update`);
+        navigate(`/${role}/update/${property.id}`);
         
     } catch (error) {
   }

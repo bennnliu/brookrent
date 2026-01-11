@@ -72,7 +72,7 @@ const NavBar = ({ user, setUser, loading }) => {
                     size="sm"
                     className="bg-[rgb(153,0,0)] hover:bg-[rgb(120,0,0)] text-white"
                   >
-                    <Link to="/lister/list">Become a lister</Link>
+                    <Link to="/auth/signup">Become a lister</Link>
                   </Button>
                 )}
               </div>

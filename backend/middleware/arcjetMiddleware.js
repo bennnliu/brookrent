@@ -21,7 +21,7 @@ const aj = arcjet({
 
 const ajDecision = async (req, res, next) => {
     try {
-        const decision = await aj.protect(req, { requested: 2 });
+        const decision = await aj.protect(req, { requested: 1 });
         console.log("Arcjet decision", decision);
 
         if (decision.isDenied()) {

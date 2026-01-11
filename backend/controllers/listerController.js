@@ -67,40 +67,67 @@ const createListing = async (req, res) => {
     }
 }
 
-const updateListing = async (req, res) => {
-    try{
+ const updateListing = async (req, res) => {
+    try {
         const id = req.params.id;
 
-        //Checks if the id exists
-        if((await pool.query(`SELECT id FROM properties WHERE id = $1`,[id])).rows.length === 0){
-            return res.status(400).json({message: "Listing does not exist"})
+        // 1. Check if the listing exists
+        const listingCheck = await pool.query(`SELECT id, lister_id FROM properties WHERE id = $1`, [id]);
+        if (listingCheck.rows.length === 0) {
+            return res.status(400).json({ message: "Listing does not exist" });
         }
 
-        //Checks if the lister_id matches
-        const listerId = req.user.listerId
-        const image_urls = req.image_urls
-        const property_lister_id  = await pool.query(`SELECT lister_id FROM properties WHERE id = $1`, [id])
-
-        if(listerId !== property_lister_id.rows[0].lister_id){
-            return res.status(403).json({message: "You do not own this listing"})
+        // 2. Ownership Check (Security)
+        const listerId = req.user.listerId;
+        if (listerId !== listingCheck.rows[0].lister_id) {
+            return res.status(403).json({ message: "You do not own this listing" });
         }
 
-        const {title, price, address, description} = req.body;
-        const query = 
-        `UPDATE properties SET (title, price, address, description, image_urls, updated_at) = 
-        ($1, $2, $3, $4, $5, NOW()) WHERE id = $6
-        RETURNING *`;
-        const values = [title, price, address, description, image_urls, id];
+        // 3. IMAGE LOGIC: Merge Old + New
+        // A. Get new file uploads from Cloudinary middleware (defaults to empty array if none)
+        const new_uploads = req.image_urls || []; 
+        let kept_existing_images = [];
 
-        const result = await pool.query(query,values)
-        return res.status(200).json(result.rows[0])
+        // B. Get the list of OLD images the user wanted to keep
+        // We check if it exists because FormData might not send it if the array is empty
+        if (req.body.existing_images) {
+            try {
+                // We must parse it because FormData sends arrays as stringified JSON
+                kept_existing_images = JSON.parse(req.body.existing_images);
+            } catch (err) {
+                console.error("Failed to parse existing_images", err);
+                kept_existing_images = [];
+            }
+        }
 
-    }
-    catch(e){
-        res.status(404).send(e)
+        // C. Combine them into one final array to save to the DB
+        // 
+        const final_image_urls = [...kept_existing_images, ...new_uploads];
+
+        // 4. Update Database
+        const { title, price, address, description } = req.body;
+        
+        const query = `
+            UPDATE properties 
+            SET (title, price, address, description, image_urls, updated_at) = 
+            ($1, $2, $3, $4, $5, NOW()) 
+            WHERE id = $6
+            RETURNING *
+        `;
+        
+        // IMPORTANT: We use 'final_image_urls' here
+        const values = [title, price, address, description, final_image_urls, id];
+
+        const result = await pool.query(query, values);
+        
+        // Return the updated row
+        return res.status(200).json(result.rows[0]);
+
+    } catch (e) {
+        console.error(e);
+        res.status(500).send(e.message);
     }
 }
-
 const deleteListing = async (req, res) => {
     try{
         const id = req.params.id;

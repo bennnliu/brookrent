@@ -17,7 +17,7 @@ const upload = multer({
 }});
 
 export const uploadImage = (req, res, next) => {
-    upload.array('photos',5)(req, res, async (e) => {
+    upload.array('photos')(req, res, async (e) => {
         if (e) {
             if (e.code === 'LIMIT_FILE_SIZE') {
                 return res.status(413).json({ error: 'File too large. Max size is 5MB.' });

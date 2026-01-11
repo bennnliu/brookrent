@@ -23,9 +23,7 @@ function ListerDashboardPage() {
     const [hasListings, setHasListings] = useState(false)
     const [loading, setLoading] = useState(true)
     const [role, setRole] = useState("")
-
     
-
     useEffect(()=>{
         const getProperties = async() => {
             try{
