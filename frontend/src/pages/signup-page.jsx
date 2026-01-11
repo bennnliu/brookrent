@@ -49,10 +49,11 @@ const SignUpPage = () => {
         try{
             setIsSignedUp(true)
             const res = await api.post("/user/signup", data)
-            localStorage.setItem("jwtToken", res.data.token)
-            localStorage.setItem("email",res.data.email)
-            localStorage.setItem("name", res.data.name)
-            navigate('/lister/dashboard')
+            const userData = await api.get("/user/userdata")
+            switch(userData.data.role){
+            case "admin": navigate('/admin/dashboard');break;
+            case "lister": navigate('/lister/dashboard');break;
+                }
             console.log(res)
         }
         catch(e){
