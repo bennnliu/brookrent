@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-const prodURL = '/api' 
+const prodURL = 'https://brookrents.onrender.com/api' 
 
 const api = axios.create({
-    baseURL: ("https://brookrents.onrender.com" + prodURL),
+    baseURL: prodURL,
     withCredentials: true, 
 })
 
