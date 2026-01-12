@@ -72,9 +72,9 @@ const login = async (req, res) => {
         const token = jwt.sign(payload, JWT_SECRET,{expiresIn: "1h" })
         return res.cookie('jwtToken', token, {
             httpOnly: true, 
-            secure: true,
+            secure: NODE_ENV === 'production',
             maxAge: 60 * 60 * 1000,
-            sameSite: 'None',
+            sameSite: 'Lax',
         }).status(200).send();   
     }
     catch(e){
@@ -101,7 +101,7 @@ const signOut = async (req, res) => {
         res.clearCookie('jwtToken', {
             httpOnly: true,
             secure: NODE_ENV === 'production',
-            sameSite: 'Strict' 
+            sameSite: 'Lax' 
         });
 
         res.status(200).send({ message: "Logged out successfully" });
