@@ -54,6 +54,9 @@ app.use('/api/admin', adminRouter);
 const startServer = async () => {
   try{
       await db()
+      app.use((req, res) => {
+        res.status(404).json({ error: "Endpoint not found on api.brookrent.com" });
+      });
       app.listen(port, ()=> {
       console.log("Succesfully connected to port: " + port)
     })

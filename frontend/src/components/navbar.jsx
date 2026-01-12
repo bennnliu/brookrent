@@ -42,7 +42,8 @@ const Navbar = () => {
             ) : user ? (
               <div className="hidden lg:flex items-center gap-6">
                 <span className="text-base font-medium text-gray-700">
-                  Hi, <span className="font-bold text-gray-900 text-lg">{user.name}</span>
+                  <p className="text-gray-500 text-sm">Signed in as</p>
+                    <p className="font-bold text-lg text-gray-900">{user.name}</p>
                 </span>
                <Link 
                     to={`/${user.role}/dashboard`} 
