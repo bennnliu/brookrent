@@ -42,7 +42,7 @@ const Navbar = () => {
             ) : user ? (
               <div className="hidden lg:flex items-center gap-6">
                 <span className="text-base font-medium text-gray-700">
-                   <span className="text-gray-500 text-sm">Signed in as</span>
+                   <span className="text-gray-500 text-sm">Signed in as </span>
                     <span className="font-bold text-lg text-gray-900">{user.name}</span>
                 </span>
                <Link 
