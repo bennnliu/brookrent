@@ -29,7 +29,7 @@ import api from '../lib/axios'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {Spinner} from "@/components/ui/spinner.jsx";
-import { useAuth } from "@/lib/AuthContext.jsx";
+import { useAuth } from "@/lib/authcontext.jsx";
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({

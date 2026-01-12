@@ -3,7 +3,7 @@ import { Menu, X , CirclePlus} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {useState} from "react";
 import Logo from "@/assets/output-onlinepngtools.png";
-import { useAuth } from "@/lib/authcontext";
+import { useAuth } from "@/lib/authcontext.jsx";
 
 const menuItems = [
   { name: "Browse Properties", href: "/renter/properties" },
