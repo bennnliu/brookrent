@@ -37,9 +37,7 @@ function ListingsItem({property, onDelete}) {
                     case "lister": res = await api.get(`/lister/listings/${id}`);break;
             }
             setDetails(res.data)
-            console.log(res.data)
         } catch (error) {
-            console.error(error)
         } finally {
             setLoading(false)
         }

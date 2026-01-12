@@ -28,7 +28,6 @@ function PropertiesItem({property}) {
             const id = property.id
             const res = await api.get(`/renter/properties/${id}`)
             setDetails(res.data)
-            console.log(res.data)
         } catch (error) {
             console.error(error)
         } finally {

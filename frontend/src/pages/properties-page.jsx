@@ -24,7 +24,6 @@ function PropertiesPage() {
                 setProperties(res.data)
             }
             catch(e){
-                console.log(e)
             }
             finally{
                 setLoading(false)

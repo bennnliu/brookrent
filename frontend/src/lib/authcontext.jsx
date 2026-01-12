@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
         const res = await api.get("/user/userdata");
         setUser(res.data);
       } catch (e) {
-        console.log("Not logged in");
         setUser(null);
       } finally {
         setLoading(false);
@@ -32,7 +31,6 @@ export const AuthProvider = ({ children }) => {
       await api.post("/user/signout");
       setUser(null); 
     } catch (e) {
-      console.error(e);
     }
   };
 

@@ -48,7 +48,6 @@ function ListerDashboardPage() {
                 setMessage("You do not have access.")
                 setLoading(false)
                 setIsLogged(false)
-                console.log(e)
             }
         }
         getProperties()
