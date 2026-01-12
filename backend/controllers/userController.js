@@ -72,7 +72,7 @@ const login = async (req, res) => {
         const token = jwt.sign(payload, JWT_SECRET,{expiresIn: "1h" })
         return res.cookie('jwtToken', token, {
             httpOnly: true, 
-            secure: NODE_ENV === 'production',
+            secure: true,
             maxAge: 60 * 60 * 1000,
             sameSite: 'None',
         }).status(200).send();   
