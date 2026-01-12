@@ -29,6 +29,7 @@ import api from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {Spinner} from "@/components/ui/spinner.jsx";
+import { useAuth } from "@/lib/AuthContext.jsx";
 
 const formSchema = z.object({
         email: z.email("Enter in a proper email address"),
@@ -39,6 +40,7 @@ const formSchema = z.object({
 function LoginPage() {
   const [isExist,setIsExist] = useState(true)
   const [isLogin,setIsLogin] = useState(false)
+  const { login } = useAuth();
 
   //Logic that will be implemented when the user clicks submit
   const navigate = useNavigate()
@@ -47,6 +49,7 @@ function LoginPage() {
           setIsLogin(true)
           await api.post("/user/login", data)
           const userData = await api.get("/user/userdata")
+          await login(userData.data);
           switch(userData.data.role){
             case "admin": navigate('/admin/dashboard');break;
             case "lister": navigate('/lister/dashboard');break;

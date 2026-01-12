@@ -2,8 +2,10 @@
 import { pool } from '../config/neondb.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Resend } from "resend";
 
-const {JWT_SECRET, NODE_ENV} = process.env
+const {JWT_SECRET, RESEND_KEY, NODE_ENV} = process.env
+const resend = new Resend(RESEND_KEY)
 
 const signUp = async (req, res) => {
     try{ 
@@ -94,4 +96,40 @@ const getUserData = async (req, res) => {
     }
 }
 
-export { signUp, login , getUserData};
+const signOut = async (req, res) => {
+    try {
+        res.clearCookie('jwtToken', {
+            httpOnly: true,
+            secure: NODE_ENV === 'production',
+            sameSite: 'Strict' 
+        });
+
+        res.status(200).send({ message: "Logged out successfully" });
+    }
+    catch (e) {
+        console.error("Logout Error:", e);
+        res.status(500).send(e);
+    }
+}
+
+const contact = async (req,res) => {
+    try{
+        const {data, error} = await resend.emails.send({
+            from: "BrookRent Team <info@brookrents.com>",
+            to: "brookrents@gmail.com",
+            replyTo: req.body.email,
+            subject: "New Inquiry from BrookRent Website",
+            text: `You received a new message from ${req.body.email}:\n\n${req.body.message}`
+        })
+        if (error) {
+            return res.status(400).json({ error });
+        }
+
+        res.status(200).json({ data });
+    }   
+    catch(e){
+
+    }
+}
+
+export { signUp, login , getUserData, signOut, contact};

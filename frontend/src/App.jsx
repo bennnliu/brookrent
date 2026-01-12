@@ -11,29 +11,13 @@ import ContactPage from "./pages/contact-page.jsx";
 import HomePage from "./pages/home-page.jsx";
 import RootLayout from "./components/root-layout";
 import ListPropertyPage from "./pages/list-property-page";
-import api from "./lib/axios";
+import UpdatePropertyPage from "./pages/update-property-page";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api
-      .get("/user/userdata", {})
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch(() => {
-        setUser(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
 
   const router = createBrowserRouter([
     {
-      element: <RootLayout user={user} setUser={setUser} loading={loading} />,
+      element: <RootLayout/>,
       errorElement: <ErrorNotFound />,
       children: [
         { path: "/", element: <HomePage /> },

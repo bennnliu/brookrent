@@ -9,7 +9,7 @@ const ErrorNotFound = ({ user, setUser, loading }) => {
     <div className="flex flex-col min-h-screen">
       <NavBar user={user} setUser={setUser} loading={loading} />
 
-      <main className="flex-grow flex flex-col items-center justify-center text-center px-4 mt-24">
+      <main className="grow flex flex-col items-center justify-center text-center px-4 mt-24">
         <h1 className="text-5xl font-bold mb-4 text-gray-900">
           Oops! The page you were looking for doesn't exist
         </h1>

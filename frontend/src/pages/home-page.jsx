@@ -6,7 +6,6 @@ import { AnimatedGroup } from "@/components/ui/animated-group";
 import PropertiesItem from "@/components/properties-item.jsx";
 import api from "@/lib/axios.jsx";
 import HomePageImage from "@/assets/homepage.jpg";
-import NavBar from "@/components/navbar";
 
 export default function HomePage() {
   const [properties, setProperties] = useState([]);
@@ -28,14 +27,21 @@ export default function HomePage() {
 
   const previewProperties = properties.slice(0, 4);
 
-  return (
-    <main className="relative w-full min-h-screen">
+return (
+    // 1. Added 'relative' to main so it contains everything properly
+    <main className="relative w-full min-h-screen overflow-x-hidden">
+      
+      {/* 2. Changed 'absolute' to 'fixed'. 
+             This ensures the image covers the screen even when you scroll down, 
+             eliminating the white bar at the bottom. */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: `url(${HomePageImage})` }}
       />
-      <div className="absolute inset-0 bg-black/50 z-10" />
-      <section className="relative z-20 flex flex-col items-center justify-center text-center pt-24 md:pt-36 px-6">
+      <div className="absolute inset-0 bg-black/60 z-10" />
+
+      {/* Hero Section */}
+      <section className="relative z-20 flex flex-col items-center justify-center text-center pt-10 md:pt-14 px-6">
         <TextEffect
           preset="fade-in-blur"
           speedSegment={0.3}
@@ -50,7 +56,7 @@ export default function HomePage() {
           speedSegment={0.3}
           delay={0.5}
           as="p"
-          className="mx-auto mt-6 max-w-2xl text-lg text-white"
+          className="mx-auto mt-6 max-w-2xl text-xl text-white"
         >
           Connecting students and locals with the homes they deserve
         </TextEffect>
@@ -66,9 +72,8 @@ export default function HomePage() {
           className="mt-10"
         >
           <Button
-            asChild
             size="lg"
-            className="rounded-xl px-10 py-4 text-white text-base transition-colors duration-200"
+            className=" px-10 py-4 text-white text-base transition-colors duration-200"
             style={{ backgroundColor: "rgb(153, 0, 0)" }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "rgb(107, 0, 13)")
@@ -81,8 +86,8 @@ export default function HomePage() {
           </Button>
         </AnimatedGroup>
       </section>
-      {/*properties preview section*/}
-      <section className="relative z-20 mt-20 px-6 pb-16 md:pb-32">
+
+      <section className="relative z-20 mt-20 px-6 pb-10 bg">
         <div className="max-w-7xl mx-auto">
           <h2
             className="text-3xl md:text-4xl font-bold mb-8 text-center"
@@ -92,7 +97,7 @@ export default function HomePage() {
           </h2>
 
           {loading ? (
-            <p className="text-white">Loading properties...</p>
+            <p className="text-white text-center">Loading properties...</p>
           ) : previewProperties.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {previewProperties.map((property) => (
@@ -100,7 +105,7 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <p className="text-white text-lg text-center">
+            <p className="text-white text-xl text-center">
               No houses available at the moment. Please check back soon!
             </p>
           )}

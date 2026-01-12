@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Field,
   FieldContent,
@@ -28,32 +26,28 @@ import { useForm } from "react-hook-form";
 import FormInput from "@/components/form-input.jsx";
 import FormHeader from "@/components/form-header.jsx";
 import api from "../lib/axios";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 // Validation schema
 const contactSchema = z.object({
-  name: z.string("Name is required"),
   email: z.email("Enter in a proper email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  message: z.string().min(1,"Please enter a message")
 });
 
 const Contact = () => {
-  const [isExist, setIsExist] = useState(false);
+  const [isLoading,setIsLoading] = useState(false)
 
-  //Logic that will be implemented when the user clicks submit
-  const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
-      const res = await api.post("/contact", data);
-      localStorage.setItem("jwtToken", res.data.token);
-      localStorage.setItem("email", res.data.email);
-      localStorage.setItem("name", res.data.name);
-      navigate("/lister/dashboard");
+      setIsLoading(true)
+      const res = await api.post("/user/contact", data);
       console.log(res);
     } catch (e) {
-      setIsExist(true);
       console.log(e);
+    }
+    finally{
+      setIsLoading(false)
     }
   };
 
@@ -61,7 +55,6 @@ const Contact = () => {
   const form = useForm({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      name: "",
       email: "",
       message: "",
     },
@@ -70,27 +63,17 @@ const Contact = () => {
     <div className="flex justify-center pt-5">
       <Card className="w-full max-w-md">
         <FormHeader
-          title="Contac us"
+          title="Contact Us"
           description={
             <>
               Send your inquiries here
-              <br />
-              Email: brookrents@gmail.com
-              <br />
-              IG: brookrent
             </>
           }
         />
         <FieldSeparator />
+        <form id="contact-form" onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent>
-          <form id="contact-form" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup className="space-y-0.5">
-              <FormInput
-                name="name"
-                control={form.control}
-                label="Name *"
-                type="text"
-              />
               <FormInput
                 name="email"
                 control={form.control}
@@ -102,22 +85,23 @@ const Contact = () => {
                 name="message"
                 control={form.control}
                 label="Message *"
-                type="message"
-                placeholder="At least 10 characters"
+                type="textarea"
+                placeholder="Enter your message"
               />
             </FieldGroup>
-          </form>
-        </CardContent>
-        <FieldSeparator />
-        <CardFooter>
-          <Button
-            type="submit"
-            form="contact-form"
-            className="mx-auto bg-[#990000] hover:bg-[#6B000D]"
-          >
-            Send
-          </Button>
-        </CardFooter>
+          </CardContent>
+          <FieldSeparator className={"pt-10"}/>
+            <CardFooter>
+              <Button
+                type="submit"
+                form="contact-form"
+                disabled={isLoading} 
+                className="mx-auto bg-[#990000] hover:bg-[#6B000D]">
+                {isLoading && <Spinner />}
+                Send
+              </Button>
+            </CardFooter>
+        </form>
       </Card>
     </div>
   );
