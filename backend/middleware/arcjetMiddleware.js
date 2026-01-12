@@ -21,6 +21,9 @@ const aj = arcjet({
 
 const ajDecision = async (req, res, next) => {
     try {
+        console.log("Allow Proxy:", app.get('trust proxy'));
+        console.log("Client IP:", req.ip); 
+        console.log("X-Forwarded-For:", req.headers['x-forwarded-for']);
         const decision = await aj.protect(req, { requested: 1 });
         console.log("Arcjet decision", decision);
 
