@@ -9,7 +9,7 @@ import { db } from './config/neondb.js';
 
 const app = express();
 app.set('trust proxy', true);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(cors({
   origin: process.env.FRONTEND_URL, 
