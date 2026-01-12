@@ -8,6 +8,7 @@ import { ajDecision } from './middleware/arcjetMiddleware.js';
 import { db } from './config/neondb.js';
 
 const app = express();
+app.set('trust proxy', true);
 const port = process.env.PORT || 3000;
 
 app.use(cors({
