@@ -8,10 +8,10 @@ import { ajDecision } from './middleware/arcjetMiddleware.js';
 import { db } from './config/neondb.js';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: 'http://localhost:5173', //Replace for production
+  origin: process.env.FRONTEND_URL, 
   credentials: true,}))
 app.use(morgan('dev'))
 app.use(helmet());
