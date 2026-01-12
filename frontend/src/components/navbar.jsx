@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X , CirclePlus} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {useState} from "react";
 import Logo from "@/assets/output-onlinepngtools.png";
@@ -31,7 +31,7 @@ const Navbar = () => {
             className="flex items-center gap-3 font-bold text-[rgb(153,0,0)] hover:opacity-90 transition hover:scale-110 duration-300 ease-in-out"
           >
             <img src={Logo} alt="BrookRent Logo" className="h-15 w-auto" />
-            <h1 className="pt-4 text-3xl tracking-tight">BrookRent</h1>
+            <h1 className="pt-4 text-3xl tracking-tight">BrookRents</h1>
           </Link>
 
           <div className="flex items-center gap-6">
@@ -41,16 +41,25 @@ const Navbar = () => {
                 <div className="hidden lg:block text-gray-400">Loading...</div>
             ) : user ? (
               <div className="hidden lg:flex items-center gap-6">
-                <span className="text-gray-700 text-md">
-                  Hi, <span className="font-semibold text-gray-900 text-lg">{user.name}</span>
+                <span className="text-base font-medium text-gray-700">
+                  Hi, <span className="font-bold text-gray-900 text-lg">{user.name}</span>
                 </span>
                <Link 
                     to={`/${user.role}/dashboard`} 
                     onClick={closeMenu}
-                    className="flex items-center py-2 text-md text-gray-700 hover:text-[rgb(153,0,0)]"
+                    className="flex items-center py-2 text-base font-medium text-gray-700 hover:text-[rgb(153,0,0)]"
                   >
                     View Dashboard
                   </Link>
+                <Button className="bg-[#990000]">
+                  <Link 
+                    to={`/${user.role}/list`} 
+                    className="flex items-center gap-2 font-bold" 
+                  >
+                    <CirclePlus className="!h-5 !w-5" />
+                    <span>List Property</span> 
+                  </Link>
+                </Button>
                 <Button
                   className="bg-[rgb(153,0,0)] hover:bg-[#6B000D] font-bold text-white px-6"
                   onClick={handleLogout}
@@ -109,7 +118,15 @@ const Navbar = () => {
                   >
                     View Dashboard
                   </Link>
-                  
+                  <Button className="bg-[#990000]">
+                  <Link 
+                    to={`/${user.role}/list`} 
+                    className="flex items-center gap-2 font-bold" 
+                  >
+                    <CirclePlus className="!h-5 !w-5" />
+                    <span>List Property</span> 
+                  </Link>
+                </Button>
                   <Button 
                     className="w-full mt-2 bg-[rgb(153,0,0)] hover:bg-[#6B000D]" 
                     onClick={handleLogout}

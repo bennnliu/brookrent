@@ -63,7 +63,8 @@ const createListing = async (req, res) => {
         return res.status(200).json(result.rows[0]);
     }
     catch(e){
-        res.status(404).error(e)
+        console.error("CREATE LISTING ERROR:", e)
+        res.status(500).send(e)
     }
 }
 

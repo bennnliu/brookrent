@@ -31,6 +31,7 @@ import { useNavigate,useParams } from "react-router-dom";
 import FormImageUpload from '@/components/form-image-upload';
 import {Spinner} from "@/components/ui/spinner.jsx";
 import { useState, useEffect} from 'react';
+import { toast } from "sonner";
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -42,7 +43,7 @@ const imageSchema = z
 
 const formSchema = z.object({
     title: z.string().min(1, "Title is required"), 
-    price: z.string().min(1, "Price is required"),
+    price: z.string().min(1, "Price is required").max(6,"Unreasonable Price").regex(/^[0-9]+$/, "Price must contain only numbers"),
     address: z.string().min(1, "Address is required"),
     description: z.string().optional(),
     photos: z.array(imageSchema).optional()
@@ -102,45 +103,63 @@ function UpdatePropertyPage () {
     }
   }, [listing, reset]);
 
-  // 3. UPDATED ONSUBMIT
   const onSubmit = async (data) => {
-    try {
-      setIsListed(true);
-      const formData = new FormData();
+  try {
+    setIsListed(true);
+    const formData = new FormData();
 
-      formData.append("title", data.title);
-      formData.append("price", data.price);
-      formData.append("address", data.address);
-      formData.append("description", data.description || "");
+    formData.append("title", data.title);
+    
+    const cleanPrice = data.price.replace(/[^0-9]/g, ''); 
+    formData.append("price", cleanPrice);
+    
+    formData.append("address", data.address);
+    formData.append("description", data.description || "");
 
-      // Append New Photos
-      if (data.photos && data.photos.length > 0) {
-        data.photos.forEach((file) => {
-          formData.append("photos", file);
-        });
-      }
-
-      formData.append("existing_images", JSON.stringify(currentExistingImages));
-
-      // Check Total (Kept + New)
-      const totalImages = currentExistingImages.length + (data.photos?.length || 0);
-      if (totalImages === 0) {
-         alert("You must have at least one image on the property.");
-         setIsListed(false);
-         return; 
-      }
-
-      const userData = await api.get("/user/userdata");
-      const role = userData.data.role;
-      await api.put(`/${role}/listings/${id}`, formData);
-      navigate(`/${role}/dashboard`);
-
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsListed(false);
+    if (data.photos && data.photos.length > 0) {
+      data.photos.forEach((file) => {
+        formData.append("photos", file);
+      });
     }
+
+    formData.append("existing_images", JSON.stringify(currentExistingImages));
+
+    const totalImages = currentExistingImages.length + (data.photos?.length || 0);
+    if (totalImages === 0) {
+      toast.error("You must have at least one image on the property.");
+      setIsListed(false);
+      return; 
+    }
+
+    const updatePropertyPromise = async () => {
+        const userData = await api.get("/user/userdata");
+        const role = userData.data.role;
+
+        await api.put(`/${role}/listings/${id}`, formData);
+        
+        return `/${role}/dashboard`; 
+    };
+
+    toast.promise(updatePropertyPromise(), {
+      loading: "Updating property details...",
+      success: (redirectPath) => {
+        // Only navigate if the API call succeeded
+        navigate(redirectPath);
+        return "Property updated successfully!";
+      },
+      error: (err) => {
+        console.error(err);
+        return "Error: " + (err.response?.data?.message || "Failed to update property");
+      },
+    });
+
+  } catch (e) {
+    console.error(e);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    setIsListed(false);
   }
+};
 
 
 
@@ -161,10 +180,11 @@ function UpdatePropertyPage () {
               <CardContent>
                   <form id="update-property-form" onSubmit={handleSubmit(onSubmit, (errors) => console.log("Validation Errors:", errors))}>
                       <FieldGroup className="-space-y-6">
-                          <FormInput name="title" control={control} label="Property Title" type="text"  />
-                          <FormInput name="price" control={control} label="Price *" type="text" />
-                          <FormInput name="address" control={control} label="Address *" type="text" />
-                          <FormInput name="description" control={control} label="Description" type="textarea" />
+                          <FormInput name="title" control={control} label="Property Title" type="text" placeholder="Apartment located in Stonybrook" />
+                          <FormInput name="price" control={control} label="Price *" type="text" placeholder="Enter rent per month"/>
+                          <FormInput name="address" control={control} label="Address *" type="text" placeholder="100 Nicolls Road, Stony Brook, NY 11790"/>
+                          <FormInput name="description" control={control} label="Description" type="textarea" placeholder="Description of the property 
+e.g, bedrooms, bathrooms, sqft, utility, flooring, rules, etc" />
                           <FormImageUpload name="photos" control={control} existingImages={currentExistingImages} 
                           onRemoveExisting={(indexToRemove) => {
                              setCurrentExistingImages(prev => prev.filter((_, i) => i !== indexToRemove));

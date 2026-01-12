@@ -115,7 +115,7 @@ const signOut = async (req, res) => {
 const contact = async (req,res) => {
     try{
         const {data, error} = await resend.emails.send({
-            from: "BrookRent Team <info@brookrents.com>",
+            from: "BrookRents Team <info@brookrents.com>",
             to: "brookrents@gmail.com",
             replyTo: req.body.email,
             subject: "New Inquiry from BrookRent Website",

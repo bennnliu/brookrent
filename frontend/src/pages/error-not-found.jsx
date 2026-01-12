@@ -18,7 +18,6 @@ const ErrorNotFound = ({ user, setUser, loading }) => {
         </p>
         <Button
           asChild
-          size="md"
           className="bg-[rgb(153,0,0)] hover:bg-[rgb(120,0,0)] text-white transition-colors"
         >
           <Link to="/">Go back to homepage</Link>

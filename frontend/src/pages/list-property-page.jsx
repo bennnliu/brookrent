@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import FormImageUpload from '@/components/form-image-upload';
 import {Spinner} from "@/components/ui/spinner.jsx";
 import { useState } from 'react';
+import { toast } from "sonner";
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -42,7 +43,7 @@ const imageSchema = z
 
 const formSchema = z.object({
     title: z.string().min(1, "Title is required"), 
-    price: z.string().min(1, "Price is required"),
+    price: z.string().min(1, "Price is required").regex(/^[0-9]+$/, "Price must contain only numbers"),
     address: z.string().min(1, "Address is required"),
     description: z.string().optional(),
     photos: z.array(imageSchema).min(1, "At least one image is required")
@@ -56,7 +57,7 @@ function ListPropertyPage() {
     try{
       setIsListed(true)
       const formData = new FormData();
-      
+
       formData.append("title", data.title);
       formData.append("price", data.price);
       formData.append("address", data.address);
@@ -67,17 +68,33 @@ function ListPropertyPage() {
           formData.append("photos", file);
         });
       }
-      
-      const userData = await api.get("/user/userdata")
-      switch(userData.data.role){
-        case "admin":  res = await api.post("/admin/list", formData); navigate('/admin/dashboard'); break;
-        case "lister": res = await api.post("/lister/list", formData);  navigate('/lister/dashboard'); break;
-      }
-     
-      console.log(res)
+
+      const submitPropertyPromise = async () => {
+        const userData = await api.get("/user/userdata");
+
+        if (userData.data.role === "admin") {
+            await api.post("/admin/list", formData);
+            return "/admin/dashboard"; 
+        } else if (userData.data.role === "lister") {
+            await api.post("/lister/list", formData);
+            return "/lister/dashboard";
+        } else {
+            throw new Error("Invalid User Role");
+        }
+    };
+
+        toast.promise(submitPropertyPromise(), {
+            loading: "Uploading property details...",
+            success: (redirectPath) => {
+                navigate(redirectPath);
+                return "Property listed successfully!";
+            },
+            error: (err) => {
+                return "Error: " + (err.response?.data?.message || "Failed to list property");
+            }
+        });
     }
     catch(e){
-      console.log(e)
     }
     finally{
        setIsListed(false)
@@ -104,9 +121,10 @@ function ListPropertyPage() {
                   <form id="list-property-form" onSubmit={form.handleSubmit(onSubmit, (errors) => console.log("Validation Errors:", errors))}>
                       <FieldGroup className="-space-y-6">
                           <FormInput name="title" control={form.control} label="Property Title" type="text" placeholder="Apartment located in Stonybrook"/>
-                          <FormInput name="price" control={form.control} label="Price *" type="text" placeholder="$800 /mo" />
+                          <FormInput name="price" control={form.control} label="Price *" type="text" placeholder="Enter rent per month" />
                           <FormInput name="address" control={form.control} label="Address *" type="text" placeholder="100 Nicolls Road, Stony Brook, NY 11790"/>
-                          <FormInput name="description" control={form.control} label="Description" type="textarea" placeholder="2 Bedrooms, 2 Bathrooms, 1400 sqft, renovated, newly constructed, etc" />
+                          <FormInput name="description" control={form.control} label="Description" type="textarea" placeholder="Description of the property 
+e.g, bedrooms, bathrooms, sqft, utility, flooring, rules, etc" />
                           <FormImageUpload name="photos" control={form.control}/>
                       </FieldGroup>
                   </form>

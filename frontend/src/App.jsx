@@ -1,7 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useEffect, useState } from "react";
 import "./index.css";
-
 import SignUpPage from "./pages/signup-page.jsx";
 import LoginPage from "./pages/login-page.jsx";
 import ErrorNotFound from "./pages/error-not-found.jsx";
@@ -12,6 +10,7 @@ import HomePage from "./pages/home-page.jsx";
 import RootLayout from "./components/root-layout";
 import ListPropertyPage from "./pages/list-property-page";
 import UpdatePropertyPage from "./pages/update-property-page";
+import { Toaster } from "@/components/ui/sonner"
 
 function App() {
 
@@ -35,7 +34,8 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return <><RouterProvider router={router} /> <Toaster position="top-center"/>;</>
+   
 }
 
 export default App;

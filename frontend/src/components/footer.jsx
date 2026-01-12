@@ -13,7 +13,7 @@ export default function FooterSection() {
       <div className="mx-auto max-w-5xl px-6 text-center">
         <div className="flex items-center justify-center gap-2 text-[rgb(153,0,0)] mb-6">
           <img src={Logo} alt="BrookRent Logo" className="h-8 w-auto" />
-          <h1 className="text-lg pt-2 font-bold">BrookRent</h1>
+          <h1 className="text-lg pt-2 font-bold">BrookRents</h1>
         </div>
 
         <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
@@ -30,7 +30,7 @@ export default function FooterSection() {
 
         <div className="my-8 flex justify-center gap-6 text-sm">
           <a
-            href="#"
+            href="https://www.instagram.com/brookrent/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -51,7 +51,7 @@ export default function FooterSection() {
           </a>
 
           <a
-            href="#"
+            href="/contact"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="TikTok"
@@ -64,16 +64,13 @@ export default function FooterSection() {
               height="1em"
               viewBox="0 0 24 24"
             >
-              <path
-                fill="currentColor"
-                d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48"
-              />
+             <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z " fill="currentColor"/>
             </svg>
           </a>
         </div>
 
         <span className="text-muted-foreground block text-center text-sm">
-          © {new Date().getFullYear()} BrookRent, All rights reserved
+          © {new Date().getFullYear()} BrookRents, All rights reserved
         </span>
       </div>
     </footer>

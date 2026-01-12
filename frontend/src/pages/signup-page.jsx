@@ -29,36 +29,42 @@ import api from '../lib/axios'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {Spinner} from "@/components/ui/spinner.jsx";
+import { useAuth } from "@/lib/AuthContext.jsx";
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
         name: z.string("Name is required" ),
         email: z.email("Enter in a proper email address"),
         password: z.string().min(8,"Password must be minimum 8 characters."),
-        number: z.string().min(10,"Must be a valid phone number").max(14, "Must be a valid phone number")
+        number: z.string().min(10, "Must be a valid phone number").regex(/^[0-9+\-\s()]*$/),
     })
 
 //Signup Page
 const SignUpPage = () => {
     const [isExist,setIsExist] = useState(false)
     const [isSignedUp,setIsSignedUp] = useState(false)
+     const { login } = useAuth();
 
     //Logic that will be implemented when the user clicks submit
     const navigate = useNavigate()
     const onSubmit = async (data) =>{
         try{
+            const rawDigits = data.number.replace(/[^0-9]/g, '');
+            const formattedPhone = rawDigits.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+
+            data.number = formattedPhone;
+
             setIsSignedUp(true)
             const res = await api.post("/user/signup", data)
             const userData = await api.get("/user/userdata")
+            await login(userData.data);
             switch(userData.data.role){
             case "admin": navigate('/admin/dashboard');break;
             case "lister": navigate('/lister/dashboard');break;
                 }
-            console.log(res)
         }
         catch(e){
             setIsExist(true)
-            console.log(e)
         }
         finally{
              setIsSignedUp(false)

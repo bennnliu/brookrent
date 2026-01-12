@@ -28,6 +28,7 @@ import FormHeader from "@/components/form-header.jsx";
 import api from "../lib/axios";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 // Validation schema
 const contactSchema = z.object({
@@ -42,9 +43,11 @@ const Contact = () => {
     try {
       setIsLoading(true)
       const res = await api.post("/user/contact", data);
+      toast.success("Message has been successfully")
       console.log(res);
     } catch (e) {
       console.log(e);
+      toast.error("Failed to send message. Please try again.");
     }
     finally{
       setIsLoading(false)
