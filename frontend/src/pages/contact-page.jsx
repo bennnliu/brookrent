@@ -29,6 +29,7 @@ import api from "../lib/axios";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 // Validation schema
 const contactSchema = z.object({
@@ -38,11 +39,12 @@ const contactSchema = z.object({
 
 const Contact = () => {
   const [isLoading,setIsLoading] = useState(false)
-
+  const navigate = useNavigate()
   const onSubmit = async (data) => {
     try {
       setIsLoading(true)
-      const res = await api.post("/user/contact", data);
+      await api.post("/user/contact", data);
+      navigate("/")
       toast.success("Message has been successfully")
     } catch (e) {
       toast.error("Failed to send message. Please try again.");

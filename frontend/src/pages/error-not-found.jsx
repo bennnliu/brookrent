@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import NavBar from "../components/navbar.jsx";
-import Logo from "@/assets/logoWITHOUTname.png";
 import { Button } from "@/components/ui/button";
 import React from "react";
+
 
 const ErrorNotFound = ({ user, setUser, loading }) => {
   return (

@@ -9,28 +9,34 @@ import { db } from './config/neondb.js';
 
 const app = express();
 app.set('trust proxy', true);
-const port = process.env.PORT;
 
+const port = process.env.PORT || 3000;
+const isProd = process.env.NODE_ENV === 'production';
 
-const allowedOrigins = process.env.FRONTEND_URLS
-  ?.split(',')
-  .map(origin => origin.trim())
+const allowedOrigins = isProd
+  ? process.env.FRONTEND_URLS?.split(',').map(o => o.trim())
+  : ['http://localhost:5173'];
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true)
+    if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
+    if (!isProd || allowedOrigins?.includes(origin)) {
+      return callback(null, true);
     }
+
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
-}))
-app.use(morgan('dev'))
+}));
+
+app.use(morgan(isProd ? 'combined' : 'dev'));
 app.use(helmet());
-app.use(ajDecision);
+
+if (isProd) {
+  app.use(ajDecision);
+}
+
 app.use(express.json());
 app.use(cookieParser())
 app.get("/api", (req,res) => {
@@ -51,12 +57,18 @@ app.use('/api/renter', renterRouter);
 app.use('/api/user', userRouter);
 app.use('/api/admin', adminRouter);
 
+app.use((req, res) => {
+  res.status(404).json({ error: "Endpoint not found on api.brookrent.com" });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: isProd ? "Internal Server Error" : err.message });
+});
+
 const startServer = async () => {
   try{
       await db()
-      app.use((req, res) => {
-        res.status(404).json({ error: "Endpoint not found on api.brookrent.com" });
-      });
       app.listen(port, ()=> {
       console.log("Succesfully connected to port: " + port)
     })

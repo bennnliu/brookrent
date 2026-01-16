@@ -28,12 +28,8 @@ export default function HomePage() {
   const previewProperties = properties.slice(0, 4);
 
 return (
-    // 1. Added 'relative' to main so it contains everything properly
     <main className="relative w-full min-h-screen overflow-x-hidden">
       
-      {/* 2. Changed 'absolute' to 'fixed'. 
-             This ensures the image covers the screen even when you scroll down, 
-             eliminating the white bar at the bottom. */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: `url(${HomePageImage})` }}
@@ -73,14 +69,8 @@ return (
         >
           <Button
             size="lg"
-            className=" px-10 py-4 text-white text-base transition-colors duration-200"
-            style={{ backgroundColor: "rgb(153, 0, 0)" }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "rgb(107, 0, 13)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "rgb(153, 0, 0)")
-            }
+            className=" px-10 py-4 text-white text-base transition-colors duration-200 bg-[rgb(153,0,0)] hover:bg-[#7a0000]"
+
           >
             <Link to="/renter/properties">View Properties</Link>
           </Button>

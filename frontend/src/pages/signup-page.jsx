@@ -30,11 +30,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {Spinner} from "@/components/ui/spinner.jsx";
 import { useAuth } from "@/lib/authcontext.jsx";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 
 //Create a schema using zod that can be used by the form to validate data
 const formSchema = z.object({
-        name: z.string("Name is required" ),
-        email: z.email("Enter in a proper email address"),
+        name: z.string().min(1,"Name is required" ),
+        email: z.email("Enter in an email address"),
         password: z.string().min(8,"Password must be minimum 8 characters."),
         number: z.string().min(10, "Must be a valid phone number").regex(/^[0-9+\-\s()]*$/),
     })
@@ -50,7 +53,7 @@ const SignUpPage = () => {
     const onSubmit = async (data) =>{
         try{
             const rawDigits = data.number.replace(/[^0-9]/g, '');
-            const formattedPhone = rawDigits.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            const formattedPhone = rawDigits.replace(/(\d{3})(\d{3})(\d{4})/, '($1)-$2-$3');
 
             data.number = formattedPhone;
 
@@ -94,6 +97,8 @@ const SignUpPage = () => {
                                 <FormInput name="email" control={form.control} label="Email *" type="email" placeholder="johnnyappleseed@gmail.com" />
                                 <FormInput name="password" control={form.control} label="Password *" type="password" placeholder="●●●●●●●●" />
                                 <FormInput name="number" control={form.control} label="Number *" type="tel" placeholder="(123)-456-7890" />
+                                <div className="flex gap-4"><Checkbox required/> <Label><Link to="/termsofservices">Accept terms of service</Link></Label></div>
+                                
                             </FieldGroup>
                         </form>
                         {isExist && <FieldError className="pt-4 text-sm">User already exists</FieldError>} 

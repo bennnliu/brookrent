@@ -32,7 +32,7 @@ import {Spinner} from "@/components/ui/spinner.jsx";
 import { useAuth } from "@/lib/authcontext.jsx";
 
 const formSchema = z.object({
-        email: z.email("Enter in a proper email address"),
+        email: z.email("Enter in an email address"),
         password: z.string().min(8,"Password must be minimum 8 characters."),
     })
 
@@ -46,6 +46,8 @@ function LoginPage() {
   const navigate = useNavigate()
   const onSubmit = async (data) =>{
       try{
+          data.email = data.email.toLowerCase();
+
           setIsLogin(true)
           await api.post("/user/login", data)
           const userData = await api.get("/user/userdata")

@@ -74,7 +74,7 @@ const login = async (req, res) => {
             httpOnly: true, 
             secure: NODE_ENV === 'production',
             maxAge: 60 * 60 * 1000,
-            domain: '.brookrents.com',
+            domain: process.env.NODE_ENV === 'production' ? '.brookrents.com' : undefined,
             sameSite: 'Lax',
         }).status(200).send();   
     }
