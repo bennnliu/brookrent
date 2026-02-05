@@ -86,7 +86,7 @@ function ListerDashboardPage() {
           <div>
             {isLogged ? 
                 <div>
-                <Card className="w-[80%] mx-auto mt-10 shadow-md  bg-[#ffffff]">
+                <Card className="w-[90%] mx-auto mt-10 shadow-md  bg-[#ffffff]">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold text-[#990000]">{message}</CardTitle>
                     </CardHeader>
@@ -96,7 +96,7 @@ function ListerDashboardPage() {
                                 {properties.map((property) => (
                                     <ListingsItem key={property.id} 
                                     property={property} 
-                                    onDelete={handleRemoveProperty}
+                                    onDelete={handleRemoveProperty} 
                                     />
                                 ))}
                             </div>
@@ -108,7 +108,7 @@ function ListerDashboardPage() {
                 </Card>
                 </div>:
                  <div>
-                    <Card className="w-[80%] mx-auto mt-10 shadow-md  bg-[#ffffff]">
+                    <Card className="w-[90%] mx-auto mt-10 shadow-md  bg-[#ffffff]">
                         <CardHeader>
                             <CardTitle className="text-2xl font-bold text-[#990000]">{message}</CardTitle>
                         </CardHeader>

@@ -8,7 +8,7 @@ function AboutUsPage() {
 
       <main className="grow flex flex-col items-center justify-center text-center p-30">
         <h1 className="text-5xl font-bold mb-4 text-gray-900">
-          Page is currently under developement
+          Page is currently under development
         </h1>
         <p className="text-gray-600 mb-8 text-lg">
           Please come back soon!

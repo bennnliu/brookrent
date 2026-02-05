@@ -36,18 +36,24 @@ import { toast } from "sonner";
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
-const imageSchema = z
-  .instanceof(File)
-  .refine((file) => file.size <= MAX_UPLOAD_SIZE, `Max image size is 5MB.`)
-  .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type),"Only .jpg, .jpeg, .png and .webp formats are supported.");
-
 const formSchema = z.object({
-    title: z.string().min(1, "Title is required"), 
-    price: z.string().min(1, "Price is required").regex(/^[0-9]+$/, "Price must contain only numbers"),
-    address: z.string().min(1, "Address is required"),
-    description: z.string().optional(),
-    photos: z.array(imageSchema).min(1, "At least one image is required")
-})
+  title: z.string().min(1, "Title is required"),
+  price: z.string().min(1, "Price is required").regex(/^[0-9]+$/, "Price must contain only numbers"),
+  address: z.string().min(1, "Address is required"),
+  description: z.string().optional(),
+  photos: z
+    .array(z.instanceof(File))
+    .min(1, "At least one image is required")
+    .refine(
+      (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+      "Max image size is 5MB." 
+    )
+    .refine(
+      (files) => files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+      "Only .jpg, .jpeg, .png and .webp formats are supported"
+    ),
+});
+
 
 function ListPropertyPage() {
   const [isListed,setIsListed] = useState(false)

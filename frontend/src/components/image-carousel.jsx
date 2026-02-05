@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-function ImageCarousel({className = "max-w-xs", ratio = "aspect-square", image_urls}) {
+function ImageCarousel({className = "w-full", ratio = "h-[250px]" , image_urls, resizeMode = "cover"}) {
     return (
     <div className="w-full" onClick={(e) => {if (e.target.closest("button")) {e.stopPropagation();}}}> 
             <Carousel opts={{ loop: true }} className={`w-full mx-auto ${className}`}> 
@@ -23,7 +23,7 @@ function ImageCarousel({className = "max-w-xs", ratio = "aspect-square", image_u
                                         <img 
                                             src={url} 
                                             alt={`House view ${index + 1}`}
-                                            className="w-full h-full object-cover" 
+                                            className={`w-full h-full object-${resizeMode} object-center` }
                                         />
                                     </CardContent>
                                 </Card>
@@ -32,8 +32,8 @@ function ImageCarousel({className = "max-w-xs", ratio = "aspect-square", image_u
                     ))}
                 </CarouselContent>
                 
-                <CarouselPrevious className="left-2 border-gray-300" />
-                <CarouselNext className="right-2 border-gray-300" />
+                <CarouselPrevious className="left-4 border-white/50 bg-white/80 hover:bg-white" />
+                <CarouselNext className="right-4 border-white/50 bg-white/80 hover:bg-white" />
             </Carousel>
         </div>
     )

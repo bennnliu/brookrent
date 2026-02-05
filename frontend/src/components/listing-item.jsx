@@ -107,7 +107,7 @@ function ListingsItem({property, onDelete}) {
                       </div>
                       <ImageCarousel image_urls={property.image_urls}/>
                   </div>
-                  <div className="p-5 flex flex-col gap-2 grow">
+                  <div className="p-1 flex flex-col gap-2 grow">
                       <div className="text-green-700 text-2xl font-bold flex items-baseline">
                           {`$${property.price}`} 
                           <span className="text-sm font-medium text-gray-500 ml-1">/mo</span>
@@ -138,7 +138,7 @@ function ListingsItem({property, onDelete}) {
                         {!loading && details && details.lister && (
                         <div className="flex flex-col">
                             <div className="w-full bg-gray-50">
-                                <ImageCarousel ratio="aspect-video" className="w-full max-w-full" image_urls={details.image_urls}/>
+                                <ImageCarousel ratio="aspect-[10/8]" className="w-[80%] max-w-full" image_urls={details.image_urls} resizeMode='contain'/>
                             </div>
                             
                             <div className="p-6 md:p-8 space-y-8">
@@ -149,10 +149,10 @@ function ListingsItem({property, onDelete}) {
                                                 {`$${details.price}`}
                                                 <span className="text-lg font-medium text-gray-500 ml-1">/mo</span>
                                             </ItemDescription>
-                                            <ItemDescription className="flex items-center font-semibold text-black gap-2">
+                                            <ItemDescription className="flex items-start font-semibold text-black gap-2">
                                                 <Home className="w-5 h-5 text-gray-500"/>{details.title}
                                             </ItemDescription>
-                                            <ItemDescription className="flex items-center text-gray-600 gap-2">
+                                            <ItemDescription className="flex items-start text-gray-600 gap-2">
                                                 <MapPin className="w-5 h-5 text-gray-500"/>{details.address}
                                             </ItemDescription>
                                         </div>
@@ -161,9 +161,9 @@ function ListingsItem({property, onDelete}) {
                                         
                                         <div className="space-y-3">
                                             <h3 className="font-semibold text-gray-900">Description</h3>
-                                            <ItemDescription className="text-base text-gray-600 leading-relaxed">
-                                                {details.description}
-                                            </ItemDescription>
+                                           <p className="text-base text-gray-600 leading-relaxed whitespace-normal">
+                                             {details.description}
+                                        </p>
                                         </div>
                                     </div>
                                         <div className="bg-gray-50 rounded-xl p-6 border h-fit">
@@ -181,10 +181,10 @@ function ListingsItem({property, onDelete}) {
                                           <Separator />
                                           
                                           <div className="space-y-3 pt-1">
-                                              <ItemDescription className="flex items-center text-gray-600 gap-3 hover:text-blue-600 transition-colors cursor-pointer">
+                                              <ItemDescription className="flex items-center text-gray-600 gap-3">
                                                   <Mail className="w-4 h-4"/>{details.lister.email}
                                               </ItemDescription>
-                                              <ItemDescription className="flex items-center text-gray-600 gap-3 hover:text-blue-600 transition-colors cursor-pointer">
+                                              <ItemDescription className="flex items-center text-gray-600 gap-3">
                                                   <Phone className="w-4 h-4"/>{details.lister.number}
                                               </ItemDescription>
                                           </div>

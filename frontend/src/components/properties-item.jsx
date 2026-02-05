@@ -14,11 +14,24 @@ import {
 } from "@/components/ui/dialog"
 import { Separator } from './ui/separator'
 import { MapPin, Mail, Phone, User, Home } from 'lucide-react'
+import { toast } from "sonner";
 
 function PropertiesItem({property}) { 
   const [isOpen,setIsOpen] = useState(false)
   const [details, setDetails] = useState(null)
   const [loading, setLoading] = useState(false)
+
+  const handleCopy = (text, label) => {
+    if (!text) return;
+
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        toast.success(`${label} copied to clipboard!`);
+      })
+      .catch(() => {
+        toast.error("Failed to copy");
+      });
+  };
 
   const handleClick = async () => {
     setIsOpen(true)
@@ -45,7 +58,7 @@ function PropertiesItem({property}) {
                   <div className="relative">
                       <ImageCarousel image_urls={property.image_urls}/>
                   </div>
-                  <div className="p-5 flex flex-col gap-2 grow">
+                  <div className="p-1 flex flex-col gap-2 grow">
                       
                       <div className="text-green-700 text-2xl font-bold flex items-baseline">
                           {`$${property.price}`} 
@@ -56,7 +69,7 @@ function PropertiesItem({property}) {
                           {property.title}
                       </ItemTitle>
                       
-                      <div className="flex items-center text-gray-500 text-sm">
+                      <div className="flex items-start text-gray-500 text-sm">
                           <MapPin className="w-4 h-4 mr-1.5 shrink-0" />
                           <span className="truncate">{property.address}</span>
                       </div>
@@ -77,7 +90,7 @@ function PropertiesItem({property}) {
                         {!loading && details && details.lister && (
                         <div className="flex flex-col">
                             <div className="w-full bg-gray-50">
-                                <ImageCarousel ratio="aspect-video" className="w-full max-w-full" image_urls={details.image_urls}/>
+                                <ImageCarousel ratio="aspect-[10/8]" className="w-full max-w-full" image_urls={details.image_urls} resizeMode='contain'/>
                             </div>
                             
                             <div className="p-6 md:p-8 space-y-8">
@@ -88,10 +101,10 @@ function PropertiesItem({property}) {
                                                 {`$${details.price}`}
                                                 <span className="text-lg font-medium text-gray-500 ml-1">/mo</span>
                                             </ItemDescription>
-                                            <ItemDescription className="flex items-center font-semibold text-black gap-2">
+                                            <ItemDescription className="flex items-start font-semibold text-black gap-2">
                                                 <Home className="w-5 h-5 text-gray-500"/>{details.title}
                                             </ItemDescription>
-                                            <ItemDescription className="flex items-center text-gray-600 gap-2">
+                                            <ItemDescription className="flex items-start text-gray-600 gap-2">
                                                 <MapPin className="w-5 h-5 text-gray-500"/>{details.address}
                                             </ItemDescription>
                                         </div>
@@ -100,9 +113,9 @@ function PropertiesItem({property}) {
                                         
                                         <div className="space-y-3">
                                             <h3 className="font-semibold text-gray-900">Description</h3>
-                                            <ItemDescription className="text-base text-gray-600 leading-relaxed">
-                                                {details.description}
-                                            </ItemDescription>
+                                        <p className="text-base text-gray-600 leading-relaxed whitespace-normal">
+                                             {details.description}
+                                        </p>
                                         </div>
                                     </div>
                                         <div className="bg-gray-50 rounded-xl p-6 border h-fit">
@@ -120,10 +133,12 @@ function PropertiesItem({property}) {
                                           <Separator />
                                           
                                           <div className="space-y-3 pt-1">
-                                              <ItemDescription className="flex items-center text-gray-600 gap-3 hover:text-blue-600 transition-colors cursor-pointer">
+                                              <ItemDescription className="flex items-center text-gray-600 gap-3 hover:text-blue-600 transition-colors cursor-pointer"
+                                              onClick={() => handleCopy(details.lister.email, "Email")}>
                                                   <Mail className="w-4 h-4"/>{details.lister.email}
                                               </ItemDescription>
-                                              <ItemDescription className="flex items-center text-gray-600 gap-3 hover:text-blue-600 transition-colors cursor-pointer">
+                                              <ItemDescription className="flex items-center text-gray-600 gap-3 hover:text-blue-600 transition-colors cursor-pointer"
+                                                onClick={() => handleCopy(details.lister.number, "Phone number")}>
                                                   <Phone className="w-4 h-4"/>{details.lister.number}
                                               </ItemDescription>
                                           </div>

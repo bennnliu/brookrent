@@ -55,7 +55,7 @@ function PropertiesPage() {
             }
             <div>
             {!loading && (
-                <Card className="w-[80%] mx-auto mt-10 shadow-md  bg-[#ffffff]">
+                <Card className="w-[90%] mx-auto mt-10 shadow-md  bg-[#ffffff]">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold text-[#990000]">Available Properties</CardTitle>
                     </CardHeader>
