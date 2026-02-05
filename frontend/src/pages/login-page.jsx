@@ -46,6 +46,7 @@ function LoginPage() {
   const navigate = useNavigate()
   const onSubmit = async (data) =>{
       try{
+          setIsExist(true)
           data.email = data.email.toLowerCase();
 
           setIsLogin(true)
@@ -82,8 +83,8 @@ function LoginPage() {
               <CardContent>
                   <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
                       <FieldGroup className="space-y-0.5">
-                          <FormInput name="email" control={form.control} label="Email" type="email" placeholder="johnnyappleseed@gmail.com" required/>
-                          <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" required/>
+                          <FormInput name="email" control={form.control} label="Email" type="email" placeholder="johnnyappleseed@gmail.com" autoComplete="username"required/>
+                          <FormInput name="password" control={form.control} label="Password" type="password" placeholder="●●●●●●●●" autoComplete="current-password" required/>
                       </FieldGroup>
                   </form>
                   {!isExist && <FieldError className="pt-4 text-sm">Invalid Credentials</FieldError>} 

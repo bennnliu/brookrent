@@ -54,7 +54,9 @@ const SignUpPage = () => {
         try{
             const rawDigits = data.number.replace(/[^0-9]/g, '');
             const formattedPhone = rawDigits.replace(/(\d{3})(\d{3})(\d{4})/, '($1)-$2-$3');
+            const formattedEmail = data.email.toLowerCase();
 
+            data.email = formattedEmail;
             data.number = formattedPhone;
 
             setIsSignedUp(true)
@@ -95,7 +97,7 @@ const SignUpPage = () => {
                             <FieldGroup className="space-y-0.5">
                                 <FormInput name="name" control={form.control} label="Name *"type="text" />
                                 <FormInput name="email" control={form.control} label="Email *" type="email" placeholder="johnnyappleseed@gmail.com" />
-                                <FormInput name="password" control={form.control} label="Password *" type="password" placeholder="●●●●●●●●" />
+                                <FormInput name="password" control={form.control} label="Password *" type="password" placeholder="●●●●●●●●" autoComplete="new-password" />
                                 <FormInput name="number" control={form.control} label="Number *" type="tel" placeholder="(123)-456-7890" />
                                 <div className="flex gap-4"><Checkbox required/> <Label><Link to="/termsofservices">Accept terms of service</Link></Label></div>
                                 
